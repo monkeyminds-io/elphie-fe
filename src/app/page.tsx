@@ -1,9 +1,56 @@
+// =============================================================================
+// File Name: app/page.tsx
+// File Description:
+// This file contains the code of the Home Page of the website.
+// =============================================================================
+// =============================================================================
+// Page Imports
+// =============================================================================
+import { Metadata } from 'next'
 import Image from 'next/image'
+import { HeroSection } from '@/ui/sections/hero-section';
+import { CardsSection } from '@/ui/sections/cards-section';
+import { FeaturesSection } from '@/ui/sections/features-section';
 
-export default function Home() {
+import takeControl from '../../public/images/taking-control-or-not.jpg';
+import { PricingSection } from '@/ui/sections/pricing-section';
+import { CTASection } from '@/ui/sections/cta-section';
+
+// =============================================================================
+// Page Props
+// =============================================================================
+type HomeProps = {}
+
+// =============================================================================
+// Page Metadata
+// =============================================================================
+export const metadata: Metadata = {
+  title: 'Home | Elphie',
+}
+
+// =============================================================================
+// Page Component
+// =============================================================================
+export default function HomePage() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      Getting stated!!
+    <main>
+      {/* Hero Section */}
+      <HeroSection/>
+
+      {/* Cards Section */}
+      <CardsSection/>
+
+      {/* Features Section Left */}
+      <FeaturesSection imagePosition={'left'}/>
+
+      {/* Features Section Right */}
+      <FeaturesSection imagePosition={'right'}/>
+
+      {/* Pricing Section */}
+      <PricingSection/>
+
+      {/* CTA Section */}
+      <CTASection/>
     </main>
   )
 }
