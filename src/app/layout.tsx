@@ -12,6 +12,7 @@ import '../styles/globals.css'
 import PrelineScript from '@/ui/base/preline-script';
 import { ReactNode } from 'react';
 import { Navbar } from '@/ui/navbar';
+import { Footer } from '@/ui/footer';
 
 // =============================================================================
 // Layout Props
@@ -45,7 +46,7 @@ export default function RootLayout({ children }: LayoutProps) {
           <Navbar/>
         </header>
         {children}
-        {/* TODO Add Footer Component */}
+        <Footer/>
       </body>
       {/* TODO Remove preline script */}
       <PrelineScript />

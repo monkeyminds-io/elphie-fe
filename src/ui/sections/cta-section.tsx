@@ -6,10 +6,14 @@
 // =============================================================================
 // Components Imports
 // =============================================================================
+import Image from 'next/image'
 import { Section } from '../base/layouts'
 import { Button } from '../elements/buttons'
 import { Heading } from '../elements/headings'
 import { Paragraph } from '../elements/paragraphs'
+
+// Images ////////////////
+import buyingToys from '../../../public/images/buying-toys.jpg'
 
 // =============================================================================
 // Components Props
@@ -38,6 +42,7 @@ export const CTASection = () => {
 
                 <div className="col-span-8">
                     {/* TODO Insert image of mobile with app */}
+                    <Image className="w-full h-80 object-cover rounded-xl" src={buyingToys} alt={'Photo by Surface at Unsplash'}/>
                 </div>
             </div>
         </Section>

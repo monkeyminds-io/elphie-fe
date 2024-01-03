@@ -14,14 +14,13 @@ import { ReactNode } from "react"
 // =============================================================================
 type ButtonProps = {
     children: ReactNode,
-    level?: string,
     href: string,
 }
 
 // =============================================================================
 // React Components
 // =============================================================================
-export const Button = ({children, level = 'primary', href}: ButtonProps) => {
+export const Button = ({children, href}: ButtonProps) => {
     return (
         <Link 
         className={

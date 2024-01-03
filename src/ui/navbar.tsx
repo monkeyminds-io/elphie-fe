@@ -12,6 +12,8 @@ import Image from 'next/image'
 // IMAGES ////////////////
 import logoIndigo from '../../public/brand/logo-gradient.svg';
 import { NavLink } from './elements/links';
+import Link from 'next/link';
+import { useState } from 'react';
 
 // =============================================================================
 // Components Props
@@ -23,29 +25,38 @@ type NavbarProps = {}
 // =============================================================================
 export const Navbar = ({}: NavbarProps) => {
 
-    const toggleNavbarStyles: Function = () => {
-        if(typeof document !== 'undefined') {
-            const navbar : HTMLElement | null = document.querySelector('[data-element="navbar"]');
-            if(navbar !== null) {
-                window.onscroll = () => {
-                    window.scrollY > 0
-                    ? navbar.classList.add('bg-white', 'shadow-lg', 'border-gray-100')
-                    : navbar.classList.remove('bg-white', 'shadow-lg', 'border-gray-100');
-                }
-            }
-        }
+    // Link Arrays ////////////////
+    const navbarLinks = [
+        {href: '#', text:'About Us'},
+        {href: '/#pricing-section', text:'Pricing'},
+        {href: '/contact-us', text:'Contact Us'},
+    ]
+
+    // Handlers ////////////////
+    /**
+     * Used to handle Scroll Event to update Navbar Background and Shadow
+     * depending on the page scroll Y possition.
+     */
+    const handleScroll = () => {
+        const navbar : HTMLElement | null = document.querySelector('[data-element="navbar"]');
+        window.scrollY > 0 ? 
+            navbar?.classList.add('bg-white', 'shadow-lg', 'border-gray-100')
+            : navbar?.classList.remove('bg-white', 'shadow-lg', 'border-gray-100');
     }
 
-    if (typeof window !== 'undefined') toggleNavbarStyles();
+    // Window Events ////////////////
+    if (typeof window !== 'undefined') {
+        window.onscroll = () => handleScroll();
+    }
 
     return (
         <nav className="mt-6 relative max-w-[85rem] w-full border border-transparent rounded-[16px] mx-2 py-3 px-4 md:flex md:items-center md:justify-between md:py-0 md:px-6 lg:px-8 xl:mx-auto transition-all duration-[320ms] ease-in-out" aria-label="Global" data-element="navbar">
             <div className="flex items-center justify-between">
                 
                 {/* BrandLink Component */}
-                <a className="flex items-center gap-x-2 text-xl text-gray-800 hover:text-gray-500 transition-colors duration-[320ms] ease-in-out " href="/" aria-label="Brand">
+                <Link className="flex items-center gap-x-2 text-xl text-gray-800 hover:text-gray-500 transition-colors duration-[320ms] ease-in-out" href="/" aria-label="Brand">
                     <Image src={logoIndigo} alt={'Elphie logo in Indigo color'}/> Elphie
-                </a>
+                </Link>
 
                 {/* NavBurger Component */}
                 <div className="md:hidden">
@@ -67,8 +78,9 @@ export const Navbar = ({}: NavbarProps) => {
                 <div className="flex flex-col gap-y-4 gap-x-0 mt-5 md:flex-row md:items-center md:justify-end md:gap-y-0 md:gap-x-7 md:mt-0 md:ps-7">
 
                     {/* NavLink Component */}
-                    <NavLink href={'/register'} text={'Create Account'}/>
-                    <NavLink href={'/contact-us'} text={'Contact Us'}/>
+                    {navbarLinks.map((link, index) => {
+                        return <NavLink href={link.href} text={link.text} key={index}/>
+                    })}
 
                     {/* NavLoginBtn Component */}
                     <a className="flex items-center gap-x-2 text-gray-500 hover:text-indigo-600 transition-colors duration-[320ms] ease-in-out md:border-s md:border-gray-300 md:my-6 md:ps-6" href="/login">
