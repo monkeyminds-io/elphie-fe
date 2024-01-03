@@ -45,7 +45,7 @@ export const Footer = () => {
                 {/* Grid */}
                 <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6">
                     <div className="col-span-full lg:col-span-1">
-                        <Link className="flex items-center gap-x-2 text-xl text-white hover:text-gray-400 transition-colors duration-[320ms] ease-in-out" href="#" aria-label="Brand">
+                        <Link className="flex items-center gap-x-2 text-xl text-white hover:text-gray-400 transition-colors duration-[320ms] ease-in-out" href="/" aria-label="Brand">
                             <Image src={logoLight} alt={'Elphie logo in Indigo color'}/> Elphie
                         </Link>
                     </div>

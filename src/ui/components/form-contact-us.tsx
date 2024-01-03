@@ -1,3 +1,4 @@
+'use client'
 // =============================================================================
 // File Name: ui/components/form-contact-us.tsx
 // File Description:
@@ -6,7 +7,10 @@
 // =============================================================================
 // Components Imports
 // =============================================================================
+import { useFormState } from 'react-dom'
+import { InputBlock, TextAreaBlock } from '../elements/inputs'
 import { Paragraph } from '../elements/paragraphs'
+import { sendMessage } from '@/libs/actions/contact-us'
 
 // =============================================================================
 // Components Props
@@ -16,38 +20,25 @@ import { Paragraph } from '../elements/paragraphs'
 // React Components
 // =============================================================================
 export const FormContactUs = () => {
+
+    // Form validation
+    const initialState = { message: null, errors: {} }
+    const [state, dispatch] = useFormState(sendMessage, initialState);
+
     return (
-        // TODO Set Action for Form Submit
-        <form className='mt-8'>
+        <form className='mt-8' action={dispatch}>
             <div className="grid gap-4">
                 {/* Grid */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                        <label htmlFor="contact-us-firstname" className="sr-only">First Name</label>
-                        <input type="text" name="contact-us-firstname" id="contact-us-firstname" className="block p-[16px] w-full text-sm border-gray-200 rounded-[16px] placeholder:text-gray-400 focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none" placeholder="First Name"/>
-                    </div>
-
-                    <div>
-                        <label htmlFor="contact-us-lastname" className="sr-only">Last Name</label>
-                        <input type="text" name="contact-us-lastname" id="contact-us-lastname" className="block p-[16px] w-full text-sm border-gray-200 rounded-[16px] placeholder:text-gray-400 focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none" placeholder="Last Name"/>
-                    </div>
+                    <InputBlock type={'text'} name={'contact-us-firstname'} label={'First Name'} placeholder={'First Name'} errors={state.errors?.firstName}/>
+                    <InputBlock type={'text'} name={'contact-us-lastname'} label={'Last Name'} placeholder={'Last Name'} errors={state.errors?.lastName}/>
                 </div>
                 {/* End Grid */}
 
-                <div>
-                    <label htmlFor="contact-us-email" className="sr-only">Email</label>
-                    <input type="email" name="contact-us-email" id="contact-us-email" autoComplete="email" className="block p-[16px] w-full text-sm border-gray-200 rounded-[16px] placeholder:text-gray-400 focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none" placeholder="Email"/>
-                </div>
+                <InputBlock type={'email'} name={'contact-us-email'} label={'Email'} placeholder={'Email'} errors={state.errors?.email}/>
+                <InputBlock type={'text'} name={'contact-us-phone'} label={'Phone Number'} placeholder={'Phone Number'} errors={state.errors?.phone}/>
+                <TextAreaBlock name={'contact-us-message'} label={'Message'} placeholder={'Message'} errors={state.errors?.message}/>
 
-                <div>
-                    <label htmlFor="contact-us-phone" className="sr-only">Phone Number</label>
-                    <input type="text" name="contact-us-phone" id="contact-us-phone" className="block p-[16px] w-full text-sm border-gray-200 rounded-[16px] placeholder:text-gray-400 focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none" placeholder="Phone Number"/>
-                </div>
-
-                <div>
-                    <label htmlFor="contact-us-message" className="sr-only">Details</label>
-                    <textarea id="contact-us-message" name="contact-us-message" rows={4} className="block p-[16px] w-full text-sm border-gray-200 rounded-[16px] placeholder:text-gray-400 focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none" placeholder="Details"></textarea>
-                </div>
             </div>
             {/* End Grid */}
 

@@ -54,7 +54,7 @@ export default function ContactUsPage() {
             <div className="mt-12 grid items-center lg:grid-cols-2 gap-6 lg:gap-16">
 
                 {/* Card */}
-                <div className="flex flex-col border rounded-[16px] p-4 sm:p-6 lg:p-8">
+                <div className="flex flex-col border border-gray-100 rounded-[16px] p-4 sm:p-6 lg:p-8 shadow-lg">
                     
                     <Heading level={2} title={'Fill form'}>Fill in the form</Heading>
 
@@ -68,7 +68,7 @@ export default function ContactUsPage() {
                     
                     {/* Cards Icon Link Block */}
                     {cardsArray.map((card, index) => {
-                        return <CardIconLink icon={card.icon} title={card.title} text={card.text} href={card.href} link={card.link}/>
+                        return <CardIconLink icon={card.icon} title={card.title} text={card.text} href={card.href} link={card.link} key={index}/>
                     })}
 
                 </div>

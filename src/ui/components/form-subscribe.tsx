@@ -17,6 +17,7 @@
 export const FormSubscribe = () => {
     return (
         // TODO Set Action for Form Submit
+        // TODO Add validation
         <form>
             <div className="mt-4 flex flex-col items-center gap-2 sm:flex-row sm:gap-3 bg-white rounded-[16px] p-2">
                 <div className="w-full">
