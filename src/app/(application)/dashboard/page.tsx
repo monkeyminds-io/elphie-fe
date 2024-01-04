@@ -1,27 +1,29 @@
 // =============================================================================
-// File Name: links.tsx
+// File Name: dashboard/page.tsx
 // File Description:
-// This file contains all the Link React Components
+// This file contains the code for the Dashboard Page
 // =============================================================================
 // =============================================================================
-// Components Imports
+// Page Imports
 // =============================================================================
-import Link from 'next/link'
-import React from "react"
+import { Metadata } from 'next'
 
 // =============================================================================
-// Components Props
+// Page Props
 // =============================================================================
-// NAV LINK PROPS ////////////////
-type NavLinkProps = {
-    href: string,
-    text: string,
+
+// =============================================================================
+// Page Metadata
+// =============================================================================
+export const metadata: Metadata = {
+    title: 'Dashobaard'
 }
 
 // =============================================================================
-// React Components
+// Page Component
 // =============================================================================
-// NAV LINK COMPONENT ////////////////
-export const NavLink = ({href, text}: NavLinkProps) => {
-    return <Link className="text-gray-500 hover:text-gray-400 transition-colors duration-[320ms] ease-in-out md:py-6" href={href}>{text}</Link>
+export default function DashobaardPage() {
+    return (
+        <div>Dashobaard</div>
+    )
 }

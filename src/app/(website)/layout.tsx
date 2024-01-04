@@ -7,8 +7,8 @@
 // Layout Imports
 // =============================================================================
 import type { Metadata } from 'next'
-import { inter } from '../libs/fonts';
-import '../styles/globals.css'
+import { inter } from '../../libs/fonts';
+import '../../styles/globals.css'
 import PrelineScript from '@/ui/base/preline-script';
 import { ReactNode } from 'react';
 import { Navbar } from '@/ui/navbar';

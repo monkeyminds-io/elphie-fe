@@ -11,7 +11,6 @@ import { useFormState } from 'react-dom'
 import { InputBlock, TextAreaBlock } from '../elements/inputs'
 import { Paragraph } from '../elements/paragraphs'
 import { State, handleSendMessage } from '@/libs/actions/contact-us'
-import { ChangeEvent, useState } from 'react'
 
 // =============================================================================
 // Components Props
@@ -21,6 +20,7 @@ import { ChangeEvent, useState } from 'react'
 // React Components
 // =============================================================================
 export const FormContactUs = () => {
+    
     // Form validation
     const initialState: State = { message: null, errors: {} }
     const [state, dispatch] = useFormState(handleSendMessage, initialState);

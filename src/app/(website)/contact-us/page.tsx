@@ -1,5 +1,5 @@
 // =============================================================================
-// File Name: contact-us/page.tsx
+// File Name: (website)/contact-us/page.tsx
 // File Description:
 // This file contains the code of the Contact Us Page of the Website
 // =============================================================================
@@ -14,9 +14,9 @@ import { CardIconLink } from '@/ui/components/cards'
 import { FormContactUs } from '@/ui/components/form-contact-us'
 
 // Images ////////////////
-import supportIcon from '../../../public/icons/support-icon.svg'
-import faqIcon from '../../../public/icons/faq-icon.svg'
-import emailIcon from '../../../public/icons/email-icon.svg'
+import supportIcon from '../../../../public/icons/support-icon.svg'
+import faqIcon from '../../../../public/icons/faq-icon.svg'
+import emailIcon from '../../../../public/icons/email-icon.svg'
 
 // =============================================================================
 // Page Props
@@ -33,6 +33,7 @@ export const metadata: Metadata = {
 // Page Component
 // =============================================================================
 export default async function ContactUsPage() {
+
     // Icon Cards Array ////////////////
     const cardsArray = [
         {icon: supportIcon, title: 'Customer Support', text: "We're here to help with any question you may have", href: '#', link: 'Contact support'},
@@ -42,8 +43,6 @@ export default async function ContactUsPage() {
 
     return (
         <Section id={'contact-us-section'} containerStyles={'max-w-2xl lg:max-w-5xl mx-auto'}>
-
-            
 
             {/* Contact Us Block */}
             <div className="mt-12 grid items-center lg:grid-cols-2 gap-6 lg:gap-16">
