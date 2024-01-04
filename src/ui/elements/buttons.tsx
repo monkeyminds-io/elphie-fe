@@ -15,12 +15,13 @@ import { ReactNode } from "react"
 type ButtonProps = {
     children: ReactNode,
     href: string,
+    styles?: string,
 }
 
 // =============================================================================
 // React Components
 // =============================================================================
-export const Button = ({children, href}: ButtonProps) => {
+export const Button = ({children, href, styles = ''}: ButtonProps) => {
     return (
         <Link 
         className={
@@ -32,7 +33,8 @@ export const Button = ({children, href}: ButtonProps) => {
             rounded-[16px]
             transition-all duration-[320ms] ease-in-out
             hover:bg-[position:_100%_100%] 
-            focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:ring-offset-2 focus:ring-offset-white`
+            focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:ring-offset-2 focus:ring-offset-white
+            ${styles}`
         }
         href={href}>
             {children}

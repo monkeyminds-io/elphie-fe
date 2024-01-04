@@ -10,7 +10,8 @@
 import { useFormState } from 'react-dom'
 import { InputBlock, TextAreaBlock } from '../elements/inputs'
 import { Paragraph } from '../elements/paragraphs'
-import { sendMessage } from '@/libs/actions/contact-us'
+import { State, handleSendMessage } from '@/libs/actions/contact-us'
+import { ChangeEvent, useState } from 'react'
 
 // =============================================================================
 // Components Props
@@ -20,24 +21,21 @@ import { sendMessage } from '@/libs/actions/contact-us'
 // React Components
 // =============================================================================
 export const FormContactUs = () => {
-
     // Form validation
-    const initialState = { message: null, errors: {} }
-    const [state, dispatch] = useFormState(sendMessage, initialState);
+    const initialState: State = { message: null, errors: {} }
+    const [state, dispatch] = useFormState(handleSendMessage, initialState);
 
     return (
         <form className='mt-8' action={dispatch}>
             <div className="grid gap-4">
                 {/* Grid */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <InputBlock type={'text'} name={'contact-us-firstname'} label={'First Name'} placeholder={'First Name'} errors={state.errors?.firstName}/>
-                    <InputBlock type={'text'} name={'contact-us-lastname'} label={'Last Name'} placeholder={'Last Name'} errors={state.errors?.lastName}/>
+                    <InputBlock type={'text'} name={'firstname'} label={'First Name'} placeholder={'First Name'} errors={state?.errors?.firstname}/>
+                    <InputBlock type={'text'} name={'lastname'} label={'Last Name'} placeholder={'Last Name'} errors={state?.errors?.lastname}/>
                 </div>
                 {/* End Grid */}
-
-                <InputBlock type={'email'} name={'contact-us-email'} label={'Email'} placeholder={'Email'} errors={state.errors?.email}/>
-                <InputBlock type={'text'} name={'contact-us-phone'} label={'Phone Number'} placeholder={'Phone Number'} errors={state.errors?.phone}/>
-                <TextAreaBlock name={'contact-us-message'} label={'Message'} placeholder={'Message'} errors={state.errors?.message}/>
+                <InputBlock type={'email'} name={'email'} label={'Email'} placeholder={'Email'} errors={state?.errors?.email}/>
+                <TextAreaBlock rows={4} name={'message'} label={'Message'} placeholder={'Message'} errors={state?.errors?.message}/>
 
             </div>
             {/* End Grid */}

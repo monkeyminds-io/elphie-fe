@@ -7,12 +7,9 @@
 // Page Imports
 // =============================================================================
 import { Metadata } from 'next'
-import Image from 'next/image'
 import { HeroSection } from '@/ui/sections/hero-section';
 import { CardsSection } from '@/ui/sections/cards-section';
 import { FeaturesSection } from '@/ui/sections/features-section';
-
-import takeControl from '../../public/images/taking-control-or-not.jpg';
 import { PricingSection } from '@/ui/sections/pricing-section';
 import { CTASection } from '@/ui/sections/cta-section';
 
@@ -31,7 +28,7 @@ export const metadata: Metadata = {
 // =============================================================================
 // Page Component
 // =============================================================================
-export default function HomePage() {
+export default function HomePage({}: HomeProps) {
   return (
     <main>
       {/* Hero Section */}

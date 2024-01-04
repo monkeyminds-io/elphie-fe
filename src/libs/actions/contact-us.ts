@@ -6,20 +6,19 @@
 // of the Website.
 // =============================================================================
 // =============================================================================
-// Actions Imports
+// Action Imports
 // =============================================================================
-import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { z } from 'zod';
 
 // =============================================================================
-// Actions Form Schemas
+// Action Form Schemas
 // =============================================================================
 const FormSchema = z.object({
-    firstName: z.string({ 
+    firstname: z.string({ 
         invalid_type_error: 'Please, use only text.' 
     }).optional(),
-    lastName: z.string({ 
+    lastname: z.string({ 
         invalid_type_error: 'Please, use only text.' 
     }).optional(),
     email: z.string({ 
@@ -27,24 +26,19 @@ const FormSchema = z.object({
     }).email({  
         message: 'Invalid email address.' 
     }),
-    phone: z.string().regex(
-        new RegExp(/^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/), 
-        'Invalid phone number.'
-    ).optional(),
     message: z.string({
         required_error: 'Message is a required field.'
     })
 });
 
 // =============================================================================
-// Actions Types
+// Action Types
 // =============================================================================
 export type State = {
     errors?: {
-        firstName?: string[];
-        lastName?: string[];
+        firstname?: string[];
+        lastname?: string[];
         email?: string[];
-        phone?: string[];
         message?: string[];
     };
     message?: string | null;
@@ -53,7 +47,7 @@ export type State = {
 // =============================================================================
 // Actions Functions
 // =============================================================================
-export const sendMessage = async (prevState: State, formData: FormData) => {
+export const handleSendMessage = async (initialState: State, formData: FormData) => {
     const validatedFields = FormSchema.safeParse(
         Object.fromEntries(formData.entries())
     )
@@ -61,15 +55,14 @@ export const sendMessage = async (prevState: State, formData: FormData) => {
     // Sending errors if any
     if(!validatedFields.success) {
         return {
-            errors: validatedFields.error.flatten().fieldErrors,
             message: 'Missing fields. Falied to submit form.',
+            errors: validatedFields.error.flatten().fieldErrors,
         }
     }
 
     // Action Processes
     try {
-        // API call goes here
-        console.log(validatedFields);
+        // TODO API call goes here
     } catch (error) {
         return {
             message: 'API ERROR: Failed to perform API call.'
@@ -77,6 +70,5 @@ export const sendMessage = async (prevState: State, formData: FormData) => {
     }
 
     // If needed revalidate and redirect to URL
-    // revalidatePath('#');
-    redirect('/contact-us?success=true');
+    redirect('/contact-us/success');
 }
