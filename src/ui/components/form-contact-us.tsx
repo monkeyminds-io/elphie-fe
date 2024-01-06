@@ -10,7 +10,7 @@
 import { useFormState } from 'react-dom'
 import { InputBlock, TextAreaBlock } from '../elements/inputs'
 import { Paragraph } from '../elements/paragraphs'
-import { State, handleSendMessage } from '@/libs/actions/contact-us'
+import { State, handleSendMessage } from '../../libs/actions/contact-us'
 
 // =============================================================================
 // Components Props
@@ -45,6 +45,9 @@ export const FormContactUs = () => {
             </button>
 
             <Paragraph size={'sm'} styles={'mt-3 text-center'}>We'll get back to you in 1-2 business days.</Paragraph>
+
+            {/* TODO Implement a global errors modal component */}
+            {/* { state?.message && <ModalError message={state?.message}/> } */}
 
         </form>
     )

@@ -7,11 +7,11 @@
 // =============================================================================
 // Layout Imports
 // =============================================================================
-import PrelineScript from '@/ui/base/preline-script'
 import { Metadata } from 'next'
-import { inter } from '../../libs/fonts';
-import '../../styles/globals.css'
+import { PrelineScript } from '@/ui/base/preline-script'
 import { Sidebar } from '@/ui/sidebar';
+import { inter } from '@/libs/fonts';
+import '@/styles/globals.css'
 
 // =============================================================================
 // Layout Props

@@ -9,7 +9,9 @@
 // Action Imports
 // =============================================================================
 import { redirect } from 'next/navigation';
+import { stringify } from 'querystring';
 import { z } from 'zod';
+import { sendEmail } from '../endpoints';
 
 // =============================================================================
 // Action Form Schemas
@@ -48,25 +50,28 @@ export type State = {
 // Actions Functions
 // =============================================================================
 export const handleSendMessage = async (initialState: State, formData: FormData) => {
+    // Validate form data
     const validatedFields = FormSchema.safeParse(
         Object.fromEntries(formData.entries())
     )
 
     // Sending errors if any
     if(!validatedFields.success) {
-        return {
-            message: 'Missing fields. Falied to submit form.',
-            errors: validatedFields.error.flatten().fieldErrors,
-        }
+        return { errors: validatedFields.error.flatten().fieldErrors }
     }
 
     // Action Processes
     try {
-        // TODO API call goes here
+        const response = await fetch(sendEmail(), {
+            method: 'POST',
+            headers: {},
+            body: '',
+        });
+
+        if(!response.ok) return { message: 'Ups... Failed to send email.' }
     } catch (error) {
-        return {
-            message: 'API ERROR: Failed to perform API call.'
-        }
+        console.error(error);
+        return { message: 'Ups... Failed to send email.' }
     }
 
     // If needed revalidate and redirect to URL

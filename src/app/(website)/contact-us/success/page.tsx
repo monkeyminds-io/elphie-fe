@@ -6,10 +6,10 @@
 // =============================================================================
 // Page Imports
 // =============================================================================
-import { Section } from '@/ui/base/layouts'
-import { Button } from '@/ui/elements/buttons'
-import { Heading } from '@/ui/elements/headings'
-import { Paragraph } from '@/ui/elements/paragraphs'
+import { Section } from '../../../../ui/base/layouts'
+import { Button } from '../../../../ui/elements/buttons'
+import { Heading } from '../../../../ui/elements/headings'
+import { Paragraph } from '../../../../ui/elements/paragraphs'
 import { Metadata } from 'next'
 
 // =============================================================================

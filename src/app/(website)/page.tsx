@@ -7,11 +7,11 @@
 // Page Imports
 // =============================================================================
 import { Metadata } from 'next'
-import { HeroSection } from '@/ui/sections/hero-section';
-import { CardsSection } from '@/ui/sections/cards-section';
-import { FeaturesSection } from '@/ui/sections/features-section';
-import { PricingSection } from '@/ui/sections/pricing-section';
-import { CTASection } from '@/ui/sections/cta-section';
+import { HeroSection } from '../../ui/sections/hero-section';
+import { CardsSection } from '../../ui/sections/cards-section';
+import { FeaturesSection } from '../../ui/sections/features-section';
+import { PricingSection } from '../../ui/sections/pricing-section';
+import { CTASection } from '../../ui/sections/cta-section';
 
 // =============================================================================
 // Page Props

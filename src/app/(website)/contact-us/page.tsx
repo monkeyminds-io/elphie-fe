@@ -7,11 +7,11 @@
 // Page Imports
 // =============================================================================
 import { Metadata } from 'next'
-import { Section } from '@/ui/base/layouts'
-import { Heading } from '@/ui/elements/headings'
-import { Paragraph } from '@/ui/elements/paragraphs'
-import { CardIconLink } from '@/ui/components/cards'
-import { FormContactUs } from '@/ui/components/form-contact-us'
+import { Section } from '../../../ui/base/layouts'
+import { Heading } from '../../../ui/elements/headings'
+import { Paragraph } from '../../../ui/elements/paragraphs'
+import { CardIconLink } from '../../../ui/components/cards'
+import { FormContactUs } from '../../../ui/components/form-contact-us'
 
 // Images ////////////////
 import supportIcon from '../../../../public/icons/support-icon.svg'

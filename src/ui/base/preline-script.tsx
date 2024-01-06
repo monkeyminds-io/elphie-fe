@@ -1,21 +1,34 @@
 "use client";
-// TODO Delete file
-
+// =============================================================================
+// File Name: ui/base/preline-scripts.tss
+// File Description:
+// This file contains the Preline Library Scripts https://preline.co/docs/index.html
+// =============================================================================
+// =============================================================================
+// Preline Imports
+// =============================================================================
 import { usePathname } from "next/navigation";
 import { useEffect } from "react";
-
 import { IStaticMethods } from "preline/preline";
+
+// =============================================================================
+// Preline Globals
+// =============================================================================
 declare global {
   interface Window {
     HSStaticMethods: IStaticMethods;
   }
 }
 
-export default function PrelineScript() {
+// =============================================================================
+// Preline Scrpit Component
+// =============================================================================
+export const PrelineScript = () => {
   const path = usePathname();
 
   useEffect(() => {
     import("preline/preline");
+    import("@preline/carousel");
   }, []);
 
   useEffect(() => {

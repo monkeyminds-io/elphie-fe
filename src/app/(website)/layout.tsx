@@ -1,5 +1,5 @@
 // =============================================================================
-// File Name: app/layout.tsx
+// File Name: (website)/layout.tsx
 // File Description:
 // This file contains the code of the website Layout Component.
 // =============================================================================
@@ -9,10 +9,10 @@
 import type { Metadata } from 'next'
 import { inter } from '../../libs/fonts';
 import '../../styles/globals.css'
-import PrelineScript from '@/ui/base/preline-script';
+import { PrelineScript } from '../../ui/base/preline-script';
 import { ReactNode } from 'react';
-import { Navbar } from '@/ui/navbar';
-import { Footer } from '@/ui/footer';
+import { Navbar } from '../../ui/navbar';
+import { Footer } from '../../ui/footer';
 
 // =============================================================================
 // Layout Props
@@ -41,15 +41,15 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: LayoutProps) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={`${inter.className} text-gray-800`}>
         <header className="fixed flex flex-wrap md:justify-start md:flex-nowrap z-50 w-full text-sm">
           <Navbar/>
         </header>
         {children}
         <Footer/>
+        {/* Preline Script */}
+        <PrelineScript />
       </body>
-      {/* TODO Remove preline script */}
-      <PrelineScript />
     </html>
   )
 }

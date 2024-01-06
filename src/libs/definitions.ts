@@ -14,7 +14,6 @@ export type User = {
     password: string;
     plan: string;
     avatar_url: string;
-    created_on: string;
-    updated_on: string;
-    deleted_on: string;
+    created_at: string;
+    updated_at: string;
 }
