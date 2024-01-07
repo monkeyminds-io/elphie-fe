@@ -11,6 +11,7 @@ const MAIN_API = 'localhost:8000';
 // =============================================================================
 // Users Service Endpoints
 // =============================================================================
+export const createUser = () => `${MAIN_API}/users/register`;
 export const getUserByEmail = (email: string) => `${MAIN_API}/users/get?email=${email}`;
 
 // =============================================================================

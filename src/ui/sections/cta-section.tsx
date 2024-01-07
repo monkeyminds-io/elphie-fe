@@ -41,7 +41,6 @@ export const CTASection = () => {
                 </div>
 
                 <div className="col-span-8">
-                    {/* TODO Insert image of mobile with app */}
                     <Image className="w-full h-80 object-cover rounded-xl" src={buyingToys} alt={'Photo by Surface at Unsplash'}/>
                 </div>
             </div>

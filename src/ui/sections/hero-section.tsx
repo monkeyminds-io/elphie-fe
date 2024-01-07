@@ -20,7 +20,7 @@ export const HeroSection = () => {
 
             {/* Announcement Banner */}
             <div className="flex justify-center">
-                <a className="inline-flex items-center gap-x-2 bg-white border border-gray-100 text-xs text-gray-500 p-2 px-3 rounded-full transition hover:border-indigo-500" href="/#plans-section">
+                <a className="inline-flex items-center gap-x-2 bg-white border border-gray-100 text-xs text-gray-500 p-2 px-3 rounded-full transition hover:border-indigo-500" href="/#pricing-section">
                 Explore our Amazing Plans
                 <span className="flex items-center gap-x-1">
                     <span className="border-s border-gray-200 text-indigo-500 ps-2">Explore</span>

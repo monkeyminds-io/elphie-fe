@@ -1,5 +1,5 @@
 // =============================================================================
-// File Name: dashboard/layout.tsx
+// File Name: (application)/layout.tsx
 // File Description:
 // This file contains the code of the Dashboard Layout
 // that will be used for the Application Pages
@@ -42,7 +42,6 @@ return (
                 <Sidebar/>
                 {children}
             </body>
-            {/* TODO Remove preline script */}
             <PrelineScript />
         </html>
     )

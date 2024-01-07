@@ -1,9 +1,11 @@
 'use client'
+
 // =============================================================================
 // File Name: ui/components/form-contact-us.tsx
 // File Description:
 // This file contains the code for the Contact Us form of the Website
 // =============================================================================
+
 // =============================================================================
 // Components Imports
 // =============================================================================
@@ -11,10 +13,6 @@ import { useFormState } from 'react-dom'
 import { InputBlock, TextAreaBlock } from '../elements/inputs'
 import { Paragraph } from '../elements/paragraphs'
 import { State, handleSendMessage } from '../../libs/actions/contact-us'
-
-// =============================================================================
-// Components Props
-// =============================================================================
 
 // =============================================================================
 // React Components
@@ -26,14 +24,17 @@ export const FormContactUs = () => {
     const [state, dispatch] = useFormState(handleSendMessage, initialState);
 
     return (
-        <form className='mt-8' action={dispatch}>
+        <form id='form-contact-us' className='mt-8' action={dispatch}>
+
             <div className="grid gap-4">
+
                 {/* Grid */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <InputBlock type={'text'} name={'firstname'} label={'First Name'} placeholder={'First Name'} errors={state?.errors?.firstname}/>
                     <InputBlock type={'text'} name={'lastname'} label={'Last Name'} placeholder={'Last Name'} errors={state?.errors?.lastname}/>
                 </div>
                 {/* End Grid */}
+
                 <InputBlock type={'email'} name={'email'} label={'Email'} placeholder={'Email'} errors={state?.errors?.email}/>
                 <TextAreaBlock rows={4} name={'message'} label={'Message'} placeholder={'Message'} errors={state?.errors?.message}/>
 
@@ -45,9 +46,6 @@ export const FormContactUs = () => {
             </button>
 
             <Paragraph size={'sm'} styles={'mt-3 text-center'}>We'll get back to you in 1-2 business days.</Paragraph>
-
-            {/* TODO Implement a global errors modal component */}
-            {/* { state?.message && <ModalError message={state?.message}/> } */}
 
         </form>
     )

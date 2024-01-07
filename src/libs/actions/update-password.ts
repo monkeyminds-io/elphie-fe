@@ -1,40 +1,41 @@
 'use server'
 // =============================================================================
-// File Name: libs/actions/login.ts
+// File Name: libs/actions/update-password.ts
 // File Description:
-// This file contains the code of the Login Form Action.
+// This file contains the code of the Action for the Update Password Form 
+// of the website
 // =============================================================================
 // =============================================================================
 // Actions Imports
 // =============================================================================
+import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { z } from 'zod';
-import bcrypt from 'bcrypt';
-import { getUserByEmail } from '../endpoints';
 
 // =============================================================================
 // Actions Form Schemas
 // =============================================================================
-const FormSchema = z.object({ 
-    email: z.string({
-        required_error: 'Email is required.',
-    }).email({
-        message: 'Invalid email address.'
-    }), 
+const FormSchema = z.object({
     password: z.string({
-        required_error: 'Password is required.',
-    }).length(8, {
-        message: 'Must be 8 characters long.'
-    })
-})
+        required_error: 'Password is a required field.'
+    }).length(8,{
+        message: 'Must be 8 characters.'
+    }),
+    passwordAgain: z.string({
+        required_error: 'Password Again is a required field.'
+    }),
+}).refine(data => data.password === data.passwordAgain, {
+    message: 'Password Again must match Password.',
+    path: ['passwordAgain']
+});
 
 // =============================================================================
 // Actions Types
 // =============================================================================
 export type State = {
     errors?: {
-        email?: string[];
         password?: string[];
+        passwordAgain?: string[];
     };
     message?: string | null;
 };
@@ -42,36 +43,30 @@ export type State = {
 // =============================================================================
 // Actions Functions
 // =============================================================================
-export const handleLogin = async (initialState: State | undefined, formData: FormData) => {
-    const parsedCredentials = FormSchema.safeParse(
+export const updatePassword = async (prevState: State | undefined, formData: FormData) => {
+
+    // Validate fields
+    const validatedFields = FormSchema.safeParse(
         Object.fromEntries(formData.entries())
-    );
+    )
 
     // Sending errors if any
-    if(!parsedCredentials.success) {
+    if(!validatedFields.success) {
         return {
-            errors: parsedCredentials.error.flatten().fieldErrors,
+            errors: validatedFields.error.flatten().fieldErrors,
             message: 'Falied to submit form.',
         }
     }
 
     // Action Processes
     try {
-        const { email, password } = parsedCredentials.data;
-        const response = await fetch(getUserByEmail(email));
-        const json = !response.ok ? null : await response.json();
-        const user = json !== null ? await json.data : null;
-
-        const passwordsMatch = await bcrypt.compare(password, user.password);
-        if (passwordsMatch) {
-            // TODO Set session and current user globals
-        }
+        // API call goes here
     } catch (error) {
-        console.error(error)
-        return { message: 'Ups... Failed to login.' }
+        return {
+            message: 'Ups... Failed to update password.'
+        }
     }
 
     // If needed revalidate and redirect to URL
-    redirect('/dashboard');
+    redirect('/login');
 }
-

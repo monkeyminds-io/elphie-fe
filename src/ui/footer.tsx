@@ -27,8 +27,8 @@ import { FormSubscribe } from './components/form-subscribe'
 export const Footer = () => {
     // Link Arrays ////////////////
     const productLinks = [
-        {href: '#', text: 'Pricing'},
-        {href: '#', text: 'Features'},
+        {href: '/#pricing-section', text: 'Pricing'},
+        {href: '/#features-section-left', text: 'Features'},
         {href: '#', text: 'Updates'},
     ]
 

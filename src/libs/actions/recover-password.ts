@@ -1,32 +1,26 @@
 'use server'
 // =============================================================================
-// File Name: libs/actions/login.ts
+// File Name: libs/actions/recover-password.ts
 // File Description:
-// This file contains the code of the Login Form Action.
+// This file contains the code of the Action for the Recover PAssword Form
 // =============================================================================
 // =============================================================================
 // Actions Imports
 // =============================================================================
+import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { z } from 'zod';
-import bcrypt from 'bcrypt';
-import { getUserByEmail } from '../endpoints';
 
 // =============================================================================
 // Actions Form Schemas
 // =============================================================================
-const FormSchema = z.object({ 
-    email: z.string({
-        required_error: 'Email is required.',
-    }).email({
-        message: 'Invalid email address.'
-    }), 
-    password: z.string({
-        required_error: 'Password is required.',
-    }).length(8, {
-        message: 'Must be 8 characters long.'
-    })
-})
+const FormSchema = z.object({
+    email: z.string({ 
+        required_error: 'Email is a required field.' 
+    }).email({  
+        message: 'Invalid email address.' 
+    }),
+});
 
 // =============================================================================
 // Actions Types
@@ -34,7 +28,6 @@ const FormSchema = z.object({
 export type State = {
     errors?: {
         email?: string[];
-        password?: string[];
     };
     message?: string | null;
 };
@@ -42,36 +35,28 @@ export type State = {
 // =============================================================================
 // Actions Functions
 // =============================================================================
-export const handleLogin = async (initialState: State | undefined, formData: FormData) => {
-    const parsedCredentials = FormSchema.safeParse(
+export const findUserByEmail = async (prevState: State | undefined, formData: FormData) => {
+    const validatedFields = FormSchema.safeParse(
         Object.fromEntries(formData.entries())
-    );
+    )
 
     // Sending errors if any
-    if(!parsedCredentials.success) {
+    if(!validatedFields.success) {
         return {
-            errors: parsedCredentials.error.flatten().fieldErrors,
+            errors: validatedFields.error.flatten().fieldErrors,
             message: 'Falied to submit form.',
         }
     }
 
     // Action Processes
     try {
-        const { email, password } = parsedCredentials.data;
-        const response = await fetch(getUserByEmail(email));
-        const json = !response.ok ? null : await response.json();
-        const user = json !== null ? await json.data : null;
-
-        const passwordsMatch = await bcrypt.compare(password, user.password);
-        if (passwordsMatch) {
-            // TODO Set session and current user globals
-        }
+        // API call goes here
     } catch (error) {
-        console.error(error)
-        return { message: 'Ups... Failed to login.' }
+        return {
+            message: 'Ups.. Failed to find user.'
+        }
     }
 
     // If needed revalidate and redirect to URL
-    redirect('/dashboard');
+    redirect('/recover-password/success');
 }
-

@@ -1,15 +1,16 @@
 // =============================================================================
-// File Name: (website)/contact-us/success/page.tsx
+// File Name: (website)/register/success/page.tsx
 // File Description:
-// This file contains the code of the Contact Us Success Page
+// This file contains the code of the Success State of the Register Form 
+// of the Website
 // =============================================================================
 // =============================================================================
 // Page Imports
 // =============================================================================
-import { Section } from '../../../../ui/base/layouts'
-import { Button } from '../../../../ui/elements/buttons'
-import { Heading } from '../../../../ui/elements/headings'
-import { Paragraph } from '../../../../ui/elements/paragraphs'
+import { Section } from '@/ui/base/layouts'
+import { Button } from '@/ui/elements/buttons'
+import { Heading } from '@/ui/elements/headings'
+import { Paragraph } from '@/ui/elements/paragraphs'
 import { Metadata } from 'next'
 
 // =============================================================================
@@ -20,13 +21,13 @@ import { Metadata } from 'next'
 // Page Metadata
 // =============================================================================
 export const metadata: Metadata = {
-    title: 'Success'
+    title: 'Register Success'
 }
 
 // =============================================================================
 // Page Component
 // =============================================================================
-export default function SuccessPage() {
+export default function RegisterSuccessPage() {
     return (
         <main>
             <Section id={'contact-us-success'} containerStyles={'flex items-center justify-center pt-[40px]'}>
@@ -40,10 +41,10 @@ export default function SuccessPage() {
                     {/* End Icon */}
 
                     <Heading level={3} title={'Congratulations'}>Congratulations!!</Heading>
-                    <Paragraph styles={'mt-4'}>Your message was successfully sent. Thanks for getting in touch</Paragraph>
+                    <Paragraph styles={'mt-4'}>Your account was successfully created. Now you can start your journey in our App!!</Paragraph>
 
                     <div className="mt-6 flex justify-center gap-x-4">
-                        <Button children={'Back to home'} href={'/'} styles={'md:w-full'}/>
+                        <Button children={'Login'} href={'/login'} styles={'md:w-full'}/>
                     </div>
                 </div>
             </Section>

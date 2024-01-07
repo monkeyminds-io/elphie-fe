@@ -13,6 +13,7 @@ import { Paragraph } from '../elements/paragraphs'
 
 // Images ////////////////
 import checkIcon from '../../../public/icons/check-icon.svg'
+import noCheckedIcon from '../../../public/icons/nocheck-icon.svg'
 
 // =============================================================================
 // Components Props
@@ -36,7 +37,7 @@ export const PricingSection = () => {
             {/* Grid */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 xl:w-10/12 xl:mx-auto">
 
-                {/* TODO Card Pricing Component */}
+                {/* Card Pricing Component */}
                 <CardPricing 
                 isPopular={false} 
                 title={'Calphie'} 
@@ -46,14 +47,14 @@ export const PricingSection = () => {
                     cents: '00'
                 }} 
                 leftListItems={[
-                    {icon: checkIcon, text: 'Add transactions'},
-                    {icon: checkIcon, text: 'Manage goals'},
-                    {icon: checkIcon, text: 'Unlimited accounts'},
+                    {icon: checkIcon, text: 'Add transactions', color: 'bg-green-600'},
+                    {icon: checkIcon, text: 'Manage goals', color: 'bg-green-600'},
+                    {icon: checkIcon, text: 'Unlimited accounts', color: 'bg-green-600'},
                 ]} 
                 rightListItems={[
-                    {icon: checkIcon, text: 'Add transactions'},
-                    {icon: checkIcon, text: 'Manage goals'},
-                    {icon: checkIcon, text: 'Unlimited accounts'},
+                    {icon: noCheckedIcon, text: 'Bank accounts sync', color: 'bg-red-500'},
+                    {icon: noCheckedIcon, text: 'Budget forcast', color: 'bg-red-500'},
+                    {icon: noCheckedIcon, text: 'Multiuser account', color: 'bg-red-500'},
                 ]} 
                 plan={'calphie'}/>
 
@@ -67,16 +68,16 @@ export const PricingSection = () => {
                     cents: '99'
                 }} 
                 leftListItems={[
-                    {icon: checkIcon, text: 'Add transactions'},
-                    {icon: checkIcon, text: 'Manage goals'},
-                    {icon: checkIcon, text: 'Unlimited accounts'},
+                    {icon: checkIcon, text: 'Add transactions', color: 'bg-green-600'},
+                    {icon: checkIcon, text: 'Manage goals', color: 'bg-green-600'},
+                    {icon: checkIcon, text: 'Unlimited accounts', color: 'bg-green-600'},
                 ]} 
                 rightListItems={[
-                    {icon: checkIcon, text: 'Add transactions'},
-                    {icon: checkIcon, text: 'Manage goals'},
-                    {icon: checkIcon, text: 'Unlimited accounts'},
+                    {icon: checkIcon, text: 'Bank accounts sync', color: 'bg-green-600'},
+                    {icon: checkIcon, text: 'Budget forcast', color: 'bg-green-600'},
+                    {icon: checkIcon, text: 'Multiuser account', color: 'bg-green-600'},
                 ]} 
-                plan={'calphie'}/>
+                plan={'elphie'}/>
 
             </div>
             {/* End Grid */}

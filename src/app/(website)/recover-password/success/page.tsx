@@ -1,15 +1,17 @@
 // =============================================================================
-// File Name: (website)/contact-us/success/page.tsx
+// File Name: (website)/recover-password/success/page.tsx
 // File Description:
-// This file contains the code of the Contact Us Success Page
+// This file contains the code of the Recover Password Success Page
+// of the Website
 // =============================================================================
 // =============================================================================
 // Page Imports
 // =============================================================================
-import { Section } from '../../../../ui/base/layouts'
-import { Button } from '../../../../ui/elements/buttons'
-import { Heading } from '../../../../ui/elements/headings'
-import { Paragraph } from '../../../../ui/elements/paragraphs'
+import { Section } from '@/ui/base/layouts'
+import { FormUpdatePassword } from '@/ui/components/form-update-password'
+import { Button } from '@/ui/elements/buttons'
+import { Heading } from '@/ui/elements/headings'
+import { Paragraph } from '@/ui/elements/paragraphs'
 import { Metadata } from 'next'
 
 // =============================================================================
@@ -20,16 +22,16 @@ import { Metadata } from 'next'
 // Page Metadata
 // =============================================================================
 export const metadata: Metadata = {
-    title: 'Success'
+    title: 'Recover Password Success'
 }
 
 // =============================================================================
 // Page Component
 // =============================================================================
-export default function SuccessPage() {
+export default function RecoverPasswordSuccessPage() {
     return (
         <main>
-            <Section id={'contact-us-success'} containerStyles={'flex items-center justify-center pt-[40px]'}>
+            <Section id={'recover-password-success'} containerStyles={'flex items-center justify-center pt-[40px]'}>
                 <div className="flex flex-col p-4 sm:p-10 w-full sm:max-w-[400px] text-center bg-white shadow-lg border border-gray-50 rounded-[16px]">
                     {/* Icon */}
                     <span className="mb-4 mx-auto inline-flex justify-center items-center w-[48px] h-[48px] rounded-full border-4 border-green-50 bg-green-100 text-green-500">
@@ -39,11 +41,12 @@ export default function SuccessPage() {
                     </span>
                     {/* End Icon */}
 
-                    <Heading level={3} title={'Congratulations'}>Congratulations!!</Heading>
-                    <Paragraph styles={'mt-4'}>Your message was successfully sent. Thanks for getting in touch</Paragraph>
-
-                    <div className="mt-6 flex justify-center gap-x-4">
-                        <Button children={'Back to home'} href={'/'} styles={'md:w-full'}/>
+                    <Heading level={3} title={'Congratulations'}>Update password</Heading>
+                    <Paragraph styles={'mt-2'}>We found your account!! You can update your password and then go to login.</Paragraph>
+                    <div className="mt-4">
+                        {/* Form */}
+                        <FormUpdatePassword/>
+                        {/* End Form */}
                     </div>
                 </div>
             </Section>

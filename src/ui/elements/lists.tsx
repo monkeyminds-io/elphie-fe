@@ -19,6 +19,7 @@ type ListProps = {
 export type ListItemProps = {
     icon: any,
     text: string,
+    color?: string,
 }
 
 // =============================================================================
@@ -28,17 +29,17 @@ export const List = ({listItems}: ListProps) => {
     return (
         <ul role="list" className="space-y-2 sm:space-y-4">
             {listItems.map((item, index) => {
-                return <ListItem icon={item.icon} text={item.text} key={index}/>
+                return <ListItem icon={item.icon} text={item.text} color={item.color} key={index}/>
             })}
         </ul>
     )
 }
 
-export const ListItem = ({icon, text}: ListItemProps) => {
+export const ListItem = ({icon, text, color = 'bg-indigo-400'}: ListItemProps) => {
     return (
         <li className="flex space-x-3">
             {/* List Item Bullet */}
-            <span className="mt-0.5 h-5 w-5 flex justify-center items-center rounded-full bg-indigo-400">
+            <span className={`mt-0.5 h-5 w-5 flex justify-center items-center rounded-full ${color}`}>
                 <Image className="h-4 w-4" src={icon} alt={"List icon"}/>
             </span>
 

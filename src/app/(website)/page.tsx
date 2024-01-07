@@ -1,5 +1,5 @@
 // =============================================================================
-// File Name: app/page.tsx
+// File Name: (website)/page.tsx
 // File Description:
 // This file contains the code of the Home Page of the website.
 // =============================================================================

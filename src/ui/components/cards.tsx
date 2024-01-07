@@ -124,7 +124,7 @@ export const CardPricing = ({isPopular, title, description, price, leftListItems
                 </div>
 
                 <div className="flex justify-end"> 
-                    <Button href={`/register?plan=${plan}`}>Get started</Button>
+                    <Button href='/register'>Get started</Button>
                 </div>
             </div>
         </div>

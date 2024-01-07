@@ -1,5 +1,5 @@
 // =============================================================================
-// File Name: dashboard/page.tsx
+// File Name: (application)/dashboard/page.tsx
 // File Description:
 // This file contains the code for the Dashboard Page
 // =============================================================================

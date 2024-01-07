@@ -7,16 +7,16 @@
 // Page Imports
 // =============================================================================
 import { Metadata } from 'next'
-import { Section } from '../../../ui/base/layouts'
-import { Heading } from '../../../ui/elements/headings'
-import { Paragraph } from '../../../ui/elements/paragraphs'
-import { CardIconLink } from '../../../ui/components/cards'
-import { FormContactUs } from '../../../ui/components/form-contact-us'
+import { Section } from '@/ui/base/layouts'
+import { HeadingSmall } from '@/ui/elements/headings'
+import { Paragraph } from '@/ui/elements/paragraphs'
+import { CardIconLink } from '@/ui/components/cards'
+import { FormContactUs } from '@/ui/components/form-contact-us'
 
 // Images ////////////////
-import supportIcon from '../../../../public/icons/support-icon.svg'
-import faqIcon from '../../../../public/icons/faq-icon.svg'
-import emailIcon from '../../../../public/icons/email-icon.svg'
+import supportIcon from '@/../public/icons/support-icon.svg'
+import faqIcon from '@/../public/icons/faq-icon.svg'
+import emailIcon from '@/../public/icons/email-icon.svg'
 
 // =============================================================================
 // Page Props
@@ -42,37 +42,39 @@ export default async function ContactUsPage() {
     ]
 
     return (
-        <Section id={'contact-us-section'} containerStyles={'max-w-2xl lg:max-w-5xl mx-auto'}>
+        <main>
+            <Section id={'contact-us-section'} containerStyles={'max-w-2xl lg:max-w-5xl mx-auto'}>
 
-            {/* Contact Us Block */}
-            <div className="mt-12 grid items-center lg:grid-cols-2 gap-6 lg:gap-16">
+                {/* Contact Us Block */}
+                <div className="mt-12 grid items-center lg:grid-cols-2 gap-6 lg:gap-16">
 
-                {/* Card */}
-                <div className="flex flex-col border border-gray-100 rounded-[16px] p-4 sm:p-6 lg:p-8 shadow-lg">
-                    
-                    {/* Title */}
-                    <Heading level={1} title={'Contact Us'}>Contact us</Heading>
-                    <Paragraph styles={'mt-4'}>We'd love to talk about how we can help you.</Paragraph>
-                    {/* End title */}
+                    {/* Card */}
+                    <div className="flex flex-col border border-gray-100 rounded-[16px] p-4 sm:p-6 lg:p-8 shadow-lg">
+                        
+                        {/* Title */}
+                        <HeadingSmall level={1} title={'Contact Us'}>Contact us</HeadingSmall>
+                        <Paragraph styles={'mt-4'}>We'd love to talk about how we can help you.</Paragraph>
+                        {/* End title */}
 
-                    {/* Contact Us Form Component */}
-                    <FormContactUs/>
+                        {/* Contact Us Form Component */}
+                        <FormContactUs/>
+
+                    </div>
+                    {/* End Card */}
+
+                    <div className="divide-y divide-gray-200">
+                        
+                        {/* Cards Icon Link Block */}
+                        {cardsArray.map((card, index) => {
+                            return <CardIconLink icon={card.icon} title={card.title} text={card.text} href={card.href} link={card.link} key={index}/>
+                        })}
+
+                    </div>
 
                 </div>
-                {/* End Card */}
+                {/* End Contact Us Block */}
 
-                <div className="divide-y divide-gray-200">
-                    
-                    {/* Cards Icon Link Block */}
-                    {cardsArray.map((card, index) => {
-                        return <CardIconLink icon={card.icon} title={card.title} text={card.text} href={card.href} link={card.link} key={index}/>
-                    })}
-
-                </div>
-
-            </div>
-            {/* End Contact Us Block */}
-
-        </Section>
+                </Section>
+        </main>
     )
 }

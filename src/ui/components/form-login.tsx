@@ -25,7 +25,7 @@ export const FormLogin = () => {
     const [state, dispatch] = useFormState(handleLogin, initialState);
 
     return (
-        <form className="grid gap-y-4 mt-5" action={dispatch}>
+        <form id='form-login' className="grid gap-y-4 mt-5" action={dispatch}>
             
             {/* Fields Block */}
             <InputBlock name={'email'} label={'Email'} placeholder={'Email'} errors={state?.errors?.email}/>
@@ -43,6 +43,7 @@ export const FormLogin = () => {
 
             {/* TODO Implement a global errors modal component */}
             {/* { state?.message && <ModalError message={state?.message}/> } */}
+            
         </form>
     )
 }
