@@ -6,12 +6,12 @@
 // =============================================================================
 // Global Variables
 // =============================================================================
-const MAIN_API = 'localhost:8000';
+const MAIN_API = 'http://localhost:8000';
 
 // =============================================================================
 // Users Service Endpoints
 // =============================================================================
-export const createUser = () => `${MAIN_API}/users/register`;
+export const createUser = () => `${MAIN_API}/users/create`;
 export const getUserByEmail = (email: string) => `${MAIN_API}/users/get?email=${email}`;
 
 // =============================================================================

@@ -16,7 +16,7 @@ import { Paragraph } from '../elements/paragraphs'
 import { useFormState } from 'react-dom'
 import { State, registerUser } from '@/libs/actions/register'
 import { Heading } from '../elements/headings'
-import { formatCardExpiryInput, formatCardNumberInput, formatEircodeInput } from '@/libs/utiles'
+import { formatCardExpiryInput, formatCardNumberInput, formatEircodeInput, regexps } from '@/libs/utiles'
 import { ChangeEvent } from 'react'
 
 // =============================================================================
@@ -71,7 +71,7 @@ export const FormRegister = () => {
             </div>
             <InputBlock type={'email'} name={'email'} label={'Email'} placeholder={'Email'} errors={state?.errors?.email}/>
             <InputBlock type={'password'} name={'password'} label={'Password'} placeholder={'Password (Must be 8 characters long)'} errors={state?.errors?.password} />
-            <InputBlock type={'password'} name={'passwordAgain'} label={'Password again'} placeholder={'Password again (Must be equal to password)'} errors={state?.errors?.passwordAgain} />
+            <InputBlock type={'password'} name={'passwordAgain'} label={'Password again'} placeholder={'Password again (Must be equal to password)'} errors={state?.errors?.passwordAgain}/>
         </div>,
         <div className='flex flex-col gap-y-4'>
             {/* Header */}
@@ -79,7 +79,7 @@ export const FormRegister = () => {
             {/* Fields Block */}
             <div className="grid md:grid-cols-2 gap-2">
                 <label htmlFor="calphie-option" className="flex flex-col gap-y-4 p-4 w-full bg-white border border-gray-200 rounded-[12px] hover:border-indigo-500 cursor-pointer">
-                    <input type="radio" id='calphie-option' name="plan" value='calphie' onChange={(e) => {handleOnChangePlanInput(e)}}
+                    <input type="radio" id='calphie-option' name="accountType" value='calphie' onChange={(e) => {handleOnChangePlanInput(e)}}
                     className="shrink-0 border-gray-200 rounded-full text-indigo-600 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none"/>
                     <Heading level={3} title={'Calphie plan'}>Calphie</Heading>
                     <Paragraph>No commitments, no card details needed, cancel anytime.</Paragraph>
@@ -87,7 +87,7 @@ export const FormRegister = () => {
                 </label>
 
                 <label htmlFor="elphie-option" className="flex flex-col gap-y-4 p-4 w-full bg-white border border-gray-200 rounded-[12px] hover:border-indigo-500 cursor-pointer">
-                    <input type="radio" id='elphie-option' name="plan" value='elphie' onChange={(e) => {handleOnChangePlanInput(e)}}
+                    <input type="radio" id='elphie-option' name="accountType" value='elphie' onChange={(e) => {handleOnChangePlanInput(e)}}
                     className="shrink-0 border-gray-200 rounded-full text-indigo-600 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none"/>
                     <Heading level={3} title={'Calphie plan'}>Elphie</Heading>
                     <Paragraph>Get all the existing and future features to get full control.</Paragraph>
@@ -95,9 +95,9 @@ export const FormRegister = () => {
                 </label>
             </div>
             {/* Errors Block */}
-            {state?.errors?.plan && 
-                    <div id={'form-error'} aria-live="polite" aria-atomic="true">
-                        <p className="mt-2 text-sm text-red-500">{state?.errors?.plan}</p>
+            {state?.errors?.accountType && 
+                    <div id={'accountType-error'} aria-live="polite" aria-atomic="true">
+                        <p className="mt-2 text-sm text-red-500">{state?.errors?.accountType}</p>
                     </div>}
                 {/* End Errors Block */}
         </div>,
@@ -126,7 +126,7 @@ export const FormRegister = () => {
                     <InputBlock onChange={(e) => formatCardNumberInput(e)} max={19} name={'cardNumber'} label={'Card number'} placeholder={'0000 0000 0000 0000'} errors={state?.errors?.cardNumber} />
                     <div className="flex flex-col sm:flex-row gap-4 w-full">
                         <InputBlock onChange={(e) => formatCardExpiryInput(e)} max={7} name={'cardExpiry'} label={'Card expiry'} placeholder={'00 / 00'} errors={state?.errors?.cardExpiry} />
-                        <InputBlock max={3} name={'cardCVV'} label={'Card CVV'} placeholder={'CVV'} errors={state?.errors?.cardCVV} />
+                        <InputBlock max={3} name={'cardCVC'} label={'Card CVC'} placeholder={'CVC'} errors={state?.errors?.cardCVC} />
                     </div>
                 </div>
             </div>
