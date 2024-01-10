@@ -8,7 +8,7 @@
 // Components Imports
 // =============================================================================
 import { State, handleLogin } from '../../libs/actions/login';
-import { useFormState, useFormStatus } from 'react-dom';
+import { useFormState } from 'react-dom';
 import { InputBlock } from '../elements/inputs';
 
 // =============================================================================

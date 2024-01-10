@@ -10,7 +10,7 @@
 // =============================================================================
 import { redirect } from 'next/navigation';
 import { z } from 'zod';
-import { createUser } from '../endpoints';
+import { createBilling, createUser } from '../endpoints';
 import bcrypt from 'bcrypt';
 
 // =============================================================================
@@ -26,8 +26,8 @@ const FormSchema = z.object({
     }),
     password: z.string({
         required_error: 'Password is a required field.'
-    }).length(8,{
-        message: 'Must be 8 characters.'
+    }).regex(new RegExp(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/), {
+        message: "Must contain at least 1 lowercase, 1 uppercase, 1 number, 1 special char and be 8 chars long."
     }),
     passwordAgain: z.string({
         required_error: 'Password Again is a required field.'
@@ -78,6 +78,45 @@ export type State = {
     message: string;
 };
 
+type UserJson = {
+    data: {
+        id: number,
+        firstName?: string | null,
+        lastName?: string | null,
+        email: string,
+        password: string,
+        accountType: string,
+        avatarPath?: string | null,
+        createdOn: string,
+        updatedOn?: string | null,
+    },
+    ok: boolean,
+    message: string,
+    timestamp: string,
+    status: number,
+}
+
+type BillingJson = {
+    data: {
+        id: number,
+        userId: number,
+        addressLine1: string,
+        addressLine2?: string | null,
+        county: string,
+        eircode?: string | null,
+        cardName: string,
+        cardNumber: string,
+        cardExpiry: string,
+        cardCVC: string,
+        createdOn: string,
+        updatedOn?: string | null,
+    },
+    ok: boolean,
+    message: string,
+    timestamp: string,
+    status: number,
+}
+
 // =============================================================================
 // Actions Functions
 // =============================================================================
@@ -99,11 +138,11 @@ export const registerUser = async (prevState: State | undefined, formData: FormD
     // Action Processes
     try {
         // Encripting password
-        const salt = bcrypt.genSaltSync(10);
-        const hashedPassword = bcrypt.hashSync(validatedFields.data.password, salt);
+        const passwordSalt = bcrypt.genSaltSync(10);
+        const hashedPassword = bcrypt.hashSync(validatedFields.data.password, passwordSalt);
 
         // Creating User
-        const response = await fetch(createUser(), {
+        const userResponse = await fetch(createUser(), {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -118,11 +157,57 @@ export const registerUser = async (prevState: State | undefined, formData: FormD
             })
         });
 
-        if(!response.ok) return { message: 'Ups... Failed to create account.' }
+        // Set Response to JSON format
+        const userJson = await userResponse.json() as UserJson;
 
-        // TODO Create Billing Info
+        // If response is not OK then send error feedback to user.
+        if(!userJson.ok) return { message: 'Ups... Failed to create account.' }
+
+        // Extract data object from Json Response
+        const createdUser = userJson.data;
+
+        // If Account type is elphie (Paid account type)
+        if(createdUser.accountType === "elphie") {
+
+            // Encrypt Card Number
+            let cardNumberSalt;
+            let hashedCardNumber
+            if(typeof validatedFields.data.cardNumber !== 'undefined') {
+                cardNumberSalt = bcrypt.genSaltSync(10);
+                hashedCardNumber = bcrypt.hashSync(validatedFields.data.cardNumber, cardNumberSalt);
+            }
+
+            // Create Billing Info
+            const billingResponse = await fetch(createBilling(), {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    userId: createdUser.id,
+                    addressLine1: validatedFields.data.addressLine1,
+                    addressLine2: validatedFields.data.addressLine2,
+                    county: validatedFields.data.county,
+                    eircode: validatedFields.data.eircode,
+                    cardName: validatedFields.data.cardName,
+                    cardNumber: hashedCardNumber,
+                    cardExpiry: validatedFields.data.cardExpiry,
+                    cardCVC: validatedFields.data.cardCVC,
+                })
+            });
+
+            // Set response to Json format
+            const billingJson = await billingResponse.json() as BillingJson;
+
+            console.log(billingJson);
+
+            // If reponse is not ok return error
+            if(!billingJson.ok) return { message: 'Ups... Failed to create billing account.' }
+        }
         
     } catch (error) {
+        // If catch error return error message
         return { message: 'Ups... Failed to create account.', };
     }
 

@@ -14,7 +14,9 @@ const MAIN_API = 'http://localhost:8000';
 export const createUser = () => `${MAIN_API}/users/create`;
 export const getUserByEmail = (email: string) => `${MAIN_API}/users/get?email=${email}`;
 
+export const createBilling = () => `${MAIN_API}/users/billing/create`;
+
 // =============================================================================
 // Emailer Service Endpoints
 // =============================================================================
-export const sendEmail = () => 'localhost:8000/emailer/send';
+export const sendEmail = () => `${MAIN_API}/emailer/send`;

@@ -63,15 +63,18 @@ export const handleLogin = async (initialState: State | undefined, formData: For
         const user = json !== null ? await json.data : null;
 
         const passwordsMatch = await bcrypt.compare(password, user.password);
-        if (passwordsMatch) {
-            // TODO Set session and current user globals
-        }
+
+        if (!passwordsMatch) return { message: "Wrong credentials..." };
+
+        // TODO Set Session and save User data
+        
     } catch (error) {
         console.error(error)
-        return { message: 'Ups... Failed to login.' }
+        return { message: 'Ups... Failed to login.' };
     }
 
     // If needed revalidate and redirect to URL
-    redirect('/dashboard');
+    // TODO Create env GLOBALS for website and API domains
+    redirect('http://localhost:3000/dashboard');
 }
 
