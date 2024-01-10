@@ -10,6 +10,7 @@
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { z } from 'zod';
+import { getUserByEmail } from '../endpoints';
 
 // =============================================================================
 // Actions Form Schemas
@@ -48,9 +49,18 @@ export const findUserByEmail = async (prevState: State | undefined, formData: Fo
         }
     }
 
+    let id;
+
     // Action Processes
     try {
-        // API call goes here
+        const response = await fetch(getUserByEmail(validatedFields.data.email));
+        const json = !response.ok ? null : await response.json();
+        const user = json !== null ? await json.data : null;
+
+        if(!user) return { message: 'Ups.. Failed to find user.' };
+
+        id = user.id;
+        
     } catch (error) {
         return {
             message: 'Ups.. Failed to find user.'
@@ -58,5 +68,5 @@ export const findUserByEmail = async (prevState: State | undefined, formData: Fo
     }
 
     // If needed revalidate and redirect to URL
-    redirect('/recover-password/success');
+    redirect(`/recover-password/${id}/success`);
 }

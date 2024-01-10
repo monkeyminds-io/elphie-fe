@@ -9,7 +9,6 @@
 // =============================================================================
 import { Section } from '@/ui/base/layouts'
 import { FormUpdatePassword } from '@/ui/components/form-update-password'
-import { Button } from '@/ui/elements/buttons'
 import { Heading } from '@/ui/elements/headings'
 import { Paragraph } from '@/ui/elements/paragraphs'
 import { Metadata } from 'next'
@@ -28,7 +27,10 @@ export const metadata: Metadata = {
 // =============================================================================
 // Page Component
 // =============================================================================
-export default function RecoverPasswordSuccessPage() {
+export default function RecoverPasswordSuccessPage({ params }: { params: { id: string } }) {
+    
+    const id = params.id;
+
     return (
         <main>
             <Section id={'recover-password-success'} containerStyles={'flex items-center justify-center pt-[40px]'}>
@@ -45,7 +47,7 @@ export default function RecoverPasswordSuccessPage() {
                     <Paragraph styles={'mt-2'}>We found your account!! You can update your password and then go to login.</Paragraph>
                     <div className="mt-4">
                         {/* Form */}
-                        <FormUpdatePassword/>
+                        <FormUpdatePassword userId={id}/>
                         {/* End Form */}
                     </div>
                 </div>

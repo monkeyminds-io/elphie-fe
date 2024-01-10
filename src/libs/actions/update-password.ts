@@ -8,9 +8,10 @@
 // =============================================================================
 // Actions Imports
 // =============================================================================
-import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { z } from 'zod';
+import { updateUserPassword } from '../endpoints';
+import bcrypt from 'bcrypt';
 
 // =============================================================================
 // Actions Form Schemas
@@ -43,7 +44,7 @@ export type State = {
 // =============================================================================
 // Actions Functions
 // =============================================================================
-export const updatePassword = async (prevState: State | undefined, formData: FormData) => {
+export const updatePassword = async (id: string, prevState: State | undefined, formData: FormData) => {
 
     // Validate fields
     const validatedFields = FormSchema.safeParse(
@@ -60,7 +61,25 @@ export const updatePassword = async (prevState: State | undefined, formData: For
 
     // Action Processes
     try {
-        // API call goes here
+        // Encripting password
+        const salt = bcrypt.genSaltSync(10);
+        const hashedPassword = bcrypt.hashSync(validatedFields.data.password, salt);
+
+        // Update password
+        const response = await fetch(updateUserPassword(id), {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                newPassword: hashedPassword,
+            })
+        })
+
+        // Return message if response is not ok
+        if(!response.ok) return { message: 'Ups... Failed to update password.' };
+
     } catch (error) {
         return {
             message: 'Ups... Failed to update password.'

@@ -11,6 +11,7 @@ import { redirect } from 'next/navigation';
 import { z } from 'zod';
 import bcrypt from 'bcrypt';
 import { getUserByEmail } from '../endpoints';
+import { set } from '../cookies';
 
 // =============================================================================
 // Actions Form Schemas
@@ -66,7 +67,11 @@ export const handleLogin = async (initialState: State | undefined, formData: For
 
         if (!passwordsMatch) return { message: "Wrong credentials..." };
 
-        // TODO Set Session and save User data
+        // Set Session ID and User ID Cookies
+        // TODO Best practice would be to secure this data in the DB for User analytics
+        const sessionId = crypto.randomUUID();
+        set({ name: 'session-id', value: sessionId, httpOnly: true, path: '/' });
+        set({ name: 'user-id', value: user.id as string, httpOnly: true, path: '/'  });
         
     } catch (error) {
         console.error(error)
@@ -74,7 +79,6 @@ export const handleLogin = async (initialState: State | undefined, formData: For
     }
 
     // If needed revalidate and redirect to URL
-    // TODO Create env GLOBALS for website and API domains
-    redirect('http://localhost:3000/dashboard');
+    redirect(`${process.env.WEBSITE_DOMAIN}/dashboard`);
 }
 

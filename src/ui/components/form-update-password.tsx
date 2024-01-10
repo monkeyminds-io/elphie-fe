@@ -14,11 +14,12 @@ import { InputBlock } from "../elements/inputs";
 // =============================================================================
 // React Components
 // =============================================================================
-export const FormUpdatePassword = () => {
+export const FormUpdatePassword = ({userId}: { userId: string }) => {
 
     // Validation
     const initialState: State = { errors: {}, message: null! };
-    const [state, dispatch] = useFormState(updatePassword, initialState);
+    const updatePasswordWithId = updatePassword.bind(null, userId)
+    const [state, dispatch] = useFormState(updatePasswordWithId, initialState);
 
     return (
         <form id='form-update-password' className="grid gap-y-4" action={dispatch}>
