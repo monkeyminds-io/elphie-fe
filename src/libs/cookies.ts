@@ -1,3 +1,4 @@
+'use server'
 // =============================================================================
 // File Name: libs/cookies.ts
 // File Description:
@@ -17,6 +18,7 @@ type CookieSettingOptions = {
     value: string,
     httpOnly?: boolean,
     path?: string,
+    expiry?: number,
 }
 
 // =============================================================================
@@ -27,12 +29,11 @@ const cookieStore = cookies();
 // =============================================================================
 // Cookies Functions
 // =============================================================================
-export const set = ({name, value, httpOnly = false, path = '/'}: CookieSettingOptions) => {
-    cookieStore.set({
-        name: name,
-        value: value,
+export const set = ({name, value, httpOnly = true, path = '/'}: CookieSettingOptions) => {
+    cookieStore.set(name, value, {
         httpOnly: httpOnly,
-        path: path
+        path: path,
+        maxAge: 86700
     });
 }
 
@@ -45,5 +46,9 @@ export const getAll = () => {
 }
 
 export const remove = (key: string) => {
-    cookieStore.delete(key);
+    cookieStore.set(key, '', {
+        httpOnly: true,
+        path: '/',
+        maxAge: -1
+    });
 }

@@ -1,5 +1,5 @@
 // =============================================================================
-// File Name: (application)/dashboard/banks/page.tsx
+// File Name: (application)/banks/page.tsx
 // File Description:
 // This file contains the code of the Banks Page of the Application.
 // =============================================================================

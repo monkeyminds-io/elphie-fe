@@ -16,8 +16,3 @@ export const getUserByEmail = (email: string) => `${MAIN_API}/users/get?email=${
 export const updateUserPassword = (id: string) => `${MAIN_API}/users/update/${id}/password`;
 
 export const createBilling = () => `${MAIN_API}/users/billing/create`;
-
-// =============================================================================
-// Emailer Service Endpoints
-// =============================================================================
-export const sendEmail = () => `${MAIN_API}/emailer/send`;

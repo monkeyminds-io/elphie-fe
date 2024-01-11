@@ -70,8 +70,8 @@ export const handleLogin = async (initialState: State | undefined, formData: For
         // Set Session ID and User ID Cookies
         // TODO Best practice would be to secure this data in the DB for User analytics
         const sessionId = crypto.randomUUID();
-        set({ name: 'session-id', value: sessionId, httpOnly: true, path: '/' });
-        set({ name: 'user-id', value: user.id as string, httpOnly: true, path: '/'  });
+        set({ name: 'session-id', value: sessionId });
+        set({ name: 'user-id', value: user.id as string });
         
     } catch (error) {
         console.error(error)
@@ -79,6 +79,6 @@ export const handleLogin = async (initialState: State | undefined, formData: For
     }
 
     // If needed revalidate and redirect to URL
-    redirect(`${process.env.WEBSITE_DOMAIN}/dashboard`);
+    redirect(`${process.env.WEBSITE_DOMAIN}/app/dashboard`);
 }
 

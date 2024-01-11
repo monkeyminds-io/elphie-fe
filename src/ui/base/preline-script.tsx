@@ -29,6 +29,8 @@ export const PrelineScript = () => {
   useEffect(() => {
     import("preline/preline");
     import("@preline/carousel");
+    import("@preline/tooltip");
+    import("@preline/dropdown");
   }, []);
 
   useEffect(() => {

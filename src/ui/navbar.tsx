@@ -8,12 +8,11 @@
 // Components Imports
 // =============================================================================
 import Image from 'next/image'
+import Link from 'next/link';
+import { NavLink } from './elements/links';
 
 // IMAGES ////////////////
 import logoIndigo from '../../public/brand/logo-gradient.svg';
-import { NavLink } from './elements/links';
-import Link from 'next/link';
-import { useState } from 'react';
 
 // =============================================================================
 // Components Props

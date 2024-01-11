@@ -31,7 +31,7 @@ export const FormSubscribe = () => {
             <div className="mt-4 flex flex-col items-center gap-2 sm:flex-row sm:gap-3 bg-white rounded-[16px] p-2">
                 <div className="w-full relative">
                     <label htmlFor="subscriberEmail" className="sr-only">Subscribe</label>
-                    <input type="text" id="subscriberEmail" name="subscriberEmail" aria-describedby="subscriberEmail-error" className="py-3 px-4 block w-full border-transparent rounded-[8px] text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none" placeholder="Enter your email"/>
+                    <input type="text" id="subscriberEmail" name="subscriberEmail" aria-describedby="subscriberEmail-error" className="py-3 px-4 block w-full border-transparent rounded-[8px] text-sm focus:border-blue-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none" placeholder="Enter your email"/>
                     {/* Error Icon */}
                     {state?.errors?.subscriberEmail ? 
                         <div className="absolute inset-y-0 end-0 flex items-center pointer-events-none pe-3">

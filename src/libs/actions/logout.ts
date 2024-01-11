@@ -1,29 +1,29 @@
+'use server'
 // =============================================================================
-// File Name: (application)/dashboard/page.tsx
+// File Name: libs/actions/logout.ts
 // File Description:
-// This file contains the code for the Dashboard Page
+// This file contains the code for the Logout action
 // =============================================================================
 // =============================================================================
-// Page Imports
+// Actions Imports
 // =============================================================================
-import { Metadata } from 'next'
+import { redirect } from 'next/navigation';
+import { remove } from '../cookies';
 
 // =============================================================================
-// Page Props
+// Actions Form Schemas
 // =============================================================================
 
 // =============================================================================
-// Page Metadata
+// Actions Types
 // =============================================================================
-export const metadata: Metadata = {
-    title: 'Dashobaard'
-}
 
 // =============================================================================
-// Page Component
+// Actions Functions
 // =============================================================================
-export default function DashobaardPage() {
-    return (
-        <div>Dashobaard</div>
-    )
+export const userLogout = async (formData: FormData) => {
+
+    remove('session-id');
+    remove('user-id');
+    redirect(`${process.env.WEBSITE_DOMAIN}/`);
 }

@@ -1,7 +1,7 @@
 // =============================================================================
-// File Name: (application)/dashboard/transactions/page.tsx
+// File Name: (application)/app/accounts/page.tsx
 // File Description:
-// This file contains the code of the Transactions Page of the Application
+// This file contains the code for the Accounts Page of the app
 // =============================================================================
 // =============================================================================
 // Page Imports
@@ -16,14 +16,14 @@ import { Metadata } from 'next'
 // Page Metadata
 // =============================================================================
 export const metadata: Metadata = {
-    title: 'Transactions'
+    title: 'Accounts'
 }
 
 // =============================================================================
 // Page Component
 // =============================================================================
-export default function TransactionsPage() {
+export default function AccountsPage() {
     return (
-        <div>Transactions</div>
+        <div>Accounts</div>
     )
 }
