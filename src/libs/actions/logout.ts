@@ -8,7 +8,7 @@
 // Actions Imports
 // =============================================================================
 import { redirect } from 'next/navigation';
-import { remove } from '../cookies';
+import { removeCookie } from '../cookies';
 
 // =============================================================================
 // Actions Form Schemas
@@ -23,7 +23,14 @@ import { remove } from '../cookies';
 // =============================================================================
 export const userLogout = async (formData: FormData) => {
 
-    remove('session-id');
-    remove('user-id');
+    // Remove all Cookies
+    if(typeof document !== 'undefined') {
+        const cookies = document.cookie.split(';');
+        cookies.forEach(cookie => {
+            removeCookie(cookie.substring(0, cookie.indexOf('=')));
+        })
+    } 
+
+    // Redirect to Home page
     redirect(`${process.env.WEBSITE_DOMAIN}/`);
 }

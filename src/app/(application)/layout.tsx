@@ -42,7 +42,6 @@ children: React.ReactNode
 }) {
 return (
         <html lang='en'>
-            {/* TODO Style body to be flex row */}
             <body className={`${inter.className} bg-gray-50`}>
                 {/* Sidebar Toggle */}
                 <SidebarToggle/>

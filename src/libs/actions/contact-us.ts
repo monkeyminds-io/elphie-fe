@@ -9,9 +9,8 @@
 // Action Imports
 // =============================================================================
 import { redirect } from 'next/navigation';
-import { stringify } from 'querystring';
 import { z } from 'zod';
-import { sendEmail } from '../endpoints';
+// import { sendEmail } from '../endpoints';
 
 // =============================================================================
 // Action Form Schemas
@@ -62,13 +61,14 @@ export const handleSendMessage = async (initialState: State, formData: FormData)
 
     // Action Processes
     try {
-        const response = await fetch(sendEmail(), {
-            method: 'POST',
-            headers: {},
-            body: '',
-        });
+        // TODO Create Send Email functionality and Email Template with "handlebars" plugin for dynamic data.
+        // const response = await fetch(sendEmail(), {
+        //     method: 'POST',
+        //     headers: {},
+        //     body: '',
+        // });
 
-        if(!response.ok) return { message: 'Ups... Failed to send email.' }
+        // if(!response.ok) return { message: 'Ups... Failed to send email.' }
     } catch (error) {
         console.error(error);
         return { message: 'Ups... Failed to send email.' }

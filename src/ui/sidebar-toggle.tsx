@@ -13,11 +13,6 @@ import Image from 'next/image'
 import logoIndigo from '@/../public/brand/logo-indigo.svg';
 
 // =============================================================================
-// Components Props
-// =============================================================================
-// TODO Creaate Props for dynamic Breadcrumbs
-
-// =============================================================================
 // React Components
 // =============================================================================
 export const SidebarToggle = () => {

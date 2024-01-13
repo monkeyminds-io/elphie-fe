@@ -11,7 +11,7 @@ import { redirect } from 'next/navigation';
 import { z } from 'zod';
 import bcrypt from 'bcrypt';
 import { getUserByEmail } from '../endpoints';
-import { set } from '../cookies';
+import { setCookie } from '../cookies';
 
 // =============================================================================
 // Actions Form Schemas
@@ -58,21 +58,26 @@ export const handleLogin = async (initialState: State | undefined, formData: For
 
     // Action Processes
     try {
+        // Get user by email
         const { email, password } = parsedCredentials.data;
         const response = await fetch(getUserByEmail(email));
-        const json = !response.ok ? null : await response.json();
-        const user = json !== null ? await json.data : null;
+        const json = await response.json();
 
+        // Set user object
+        const user = await json.data;
+        if(user === null) return  { message: 'Ups... Failed to fetch User.' }
+
+        // Check password
         const passwordsMatch = await bcrypt.compare(password, user.password);
-
         if (!passwordsMatch) return { message: "Wrong credentials..." };
 
-        // Set Session ID and User ID Cookies
-        // TODO Best practice would be to secure this data in the DB for User analytics
+        // Set Session ID and User Data Cookies
         const sessionId = crypto.randomUUID();
-        set({ name: 'session-id', value: sessionId });
-        set({ name: 'user-id', value: user.id as string });
-        
+        setCookie('session-id', sessionId);
+        Object.entries(user).forEach(([key, value]) => {
+            setCookie(`user-${key}`, value as string);
+        })
+
     } catch (error) {
         console.error(error)
         return { message: 'Ups... Failed to login.' };

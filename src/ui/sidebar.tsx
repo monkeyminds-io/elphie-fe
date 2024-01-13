@@ -20,6 +20,7 @@ import transactionsIcon from '@/../public/icons/transaction-icon.svg';
 import accountsIcon from '@/../public/icons/accounts-icon.svg';
 import banksIcon from '@/../public/icons/bank-icon-gray.svg';
 import userIcon from '@/../public/icons/user-icon-gray.svg';
+import { getCookie } from '@/libs/cookies';
 
 
 // =============================================================================
@@ -31,34 +32,26 @@ import userIcon from '@/../public/icons/user-icon-gray.svg';
 // =============================================================================
 export const Sidebar = () => {
 
-    // TODO Create Array with Sidebar Links props to loop through
+    // Sidebar Links info
     const linksProps = [
-        {
-            href: '/app/dashboard',
-            text: 'Dashboard',
-            icon: dashboardIcon,
-        },
-        {
-            href: '/app/savings',
-            text: 'Savings',
-            icon: moneyIcon,
-        },
-        {
-            href: '/app/transactions',
-            text: 'Transactions',
-            icon: transactionsIcon,
-        },
-        {
-            href: '/app/accounts',
-            text: 'Accounts',
-            icon: accountsIcon,
-        },
-        {
-            href: '/app/banks',
-            text: 'Banks',
-            icon: banksIcon,
-        },
+        { href: '/app/dashboard', text: 'Dashboard', icon: dashboardIcon, },
+        { href: '/app/savings', text: 'Savings', icon: moneyIcon, },
+        { href: '/app/transactions', text: 'Transactions', icon: transactionsIcon, },
+        { href: '/app/accounts', text: 'Accounts', icon: accountsIcon, },
+        { href: '/app/banks', text: 'Banks', icon: banksIcon, },
     ]
+
+    // User data
+    const getUserInitials = (userFullName: string): string => {
+        const first = userFullName.substring(0, 1);
+        const space = userFullName.indexOf(' ') + 1;
+        const second = userFullName.substring(space, space + 1);
+        return first + second;
+    }
+    
+    const userFullName = `${getCookie('user-firstName')?.value} ${getCookie('user-lastName')?.value}`;
+    const userEmail = getCookie('user-email')?.value;
+    const userAvatar = getCookie('user-avatarPath')?.value || null;
 
     return (
         <nav id="application-sidebar" className="hs-overlay hs-overlay-open:translate-x-0 -translate-x-full transition-all duration-300 transform hidden fixed top-0 start-0 bottom-0 z-[60] w-64 bg-white border-e border-gray-200 py-2 overflow-y-auto lg:block lg:translate-x-0 lg:end-auto lg:bottom-0 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300">
@@ -86,24 +79,20 @@ export const Sidebar = () => {
 
                 {/* User */}
                 <div className="hs-tooltip inline-block [--trigger:click] sm:[--placement:top]">
-                    <div className="hs-tooltip-toggle max-w-xs p-3 flex items-center gap-x-3 bg-white hover:bg-gray-100 rounded-lg transition-colors duration-[320ms] ease-in-out cursor-pointer">
+                    <div className="hs-tooltip-toggle max-w-xs p-3 flex flex-col gap-y-1 bg-white hover:bg-gray-100 rounded-lg transition-colors duration-[320ms] ease-in-out cursor-pointer">
                         
                         {/* TODO Load image dynamically if avatar_path is not null */}
-                        <span className="inline-flex items-center justify-center h-8 w-8 rounded-full bg-gray-500 text-xs font-semibold text-white leading-none">
-                            AC
+                        <span className="inline-flex items-center justify-center h-12 w-12 rounded-lg bg-indigo-200 text-md font-semibold text-indigo-800 leading-none overflow-hidden">
+                            {!userAvatar ? 
+                                getUserInitials(userFullName)
+                                : <Image src={userAvatar} alt={`${userFullName} avatar`}/>
+                            }
                         </span>
-
+                        
                         {/* User Content */}
                         <div className="grow">
-                            {/* TODO Update dynamically with user name */}
-                            <Heading level={4} title={'User Name'} >
-                                Amanda Harvey
-                            </Heading>
-
-                            {/* TODO Update dynamically with user email */}
-                            <Paragraph size='sm'>
-                                amanda@email.com
-                            </Paragraph>
+                            <Heading level={4} title={'User Name'}>{userFullName}</Heading>
+                            <Paragraph size='sm'>{userEmail}</Paragraph>
                         </div>
                         {/* End User Content */}
 

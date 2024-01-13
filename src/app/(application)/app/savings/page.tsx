@@ -6,7 +6,9 @@
 // =============================================================================
 // Page Imports
 // =============================================================================
+import { getCookie } from '@/libs/cookies'
 import { getFilteredSavingsByUserId } from '@/libs/endpoints'
+import { EmptyTable } from '@/ui/components/empty-table'
 import { Pagination } from '@/ui/components/pagination'
 import { Search } from '@/ui/components/search'
 import { TableSavings } from '@/ui/components/table'
@@ -52,7 +54,7 @@ export default async function SavingsPage({searchParams}: SavingsPageProps) {
     const offset = ROWS_PER_PAGE * (Number(currentPage) - 1);
     const limit = offset + ROWS_PER_PAGE;
 
-    const fetchResponse = await fetch(getFilteredSavingsByUserId(12, name));
+    const fetchResponse = await fetch(getFilteredSavingsByUserId(Number(getCookie('user-id')?.value), name));
     const jsonResponse = await fetchResponse.json();
     const data = jsonResponse.data;
 
@@ -63,7 +65,7 @@ export default async function SavingsPage({searchParams}: SavingsPageProps) {
         <div className='flex flex-col gap-4'>
             <Breadcrumbs breadcrumbs={breadcrumbs}/>
             
-            {/* Table Section */}
+            {/* Section */}
             <section className="py-4">
                 {/* Card */}
                 <div className="flex flex-col -m-1.5 py-1 min-w-full align-middle bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
@@ -76,7 +78,7 @@ export default async function SavingsPage({searchParams}: SavingsPageProps) {
                         </div>
 
                         <div className="inline-flex gap-x-2">
-                            <Search/>
+                            <Search queryName={'name'}/>
 
                             {/* TODO Add User type condition */}
                             <Link className="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-indigo-600 text-white hover:bg-indigo-700 disabled:opacity-50 disabled:pointer-events-none" href="/app/savings/create">
@@ -91,7 +93,11 @@ export default async function SavingsPage({searchParams}: SavingsPageProps) {
                     <div className="overflow-x-scroll">
                         {/* TODO Create table loading status */}
                         {/* TODO Create table empty status with type of user condition */}
-                        <TableSavings data={pageData} name={name} currentPage={currentPage.toString()} service={'savings'}/>
+                        {data.length === 0 ?
+                            <EmptyTable item={'Saving'}/>
+                            : <TableSavings data={pageData} name={name} currentPage={currentPage.toString()} service={'savings'}/>
+                        }
+                        
                     </div>
                     {/* End Table */}
 
@@ -108,7 +114,7 @@ export default async function SavingsPage({searchParams}: SavingsPageProps) {
                 </div>
                 {/* End Card */}
             </section>
-            {/* End Table Section */}
+            {/* Table Section */}
         </div>
     )
 }

@@ -29,6 +29,6 @@ export const Heading = ({children, styles = '', level, title}: HeadingProps) => 
 }
 
 export const HeadingSmall = ({children, styles = '', level, title}: HeadingProps) => {
-    if(level === 1) return <h1 className={`font-bold text-4xl capitalize ${styles}`} title={title}>{children}</h1>
-    if(level === 2) return <h2 className={`font-bold text-3xl ${styles}`} title={title}>{children}</h2>
+    if(level === 1) return <h1 className={`font-bold text-3xl capitalize ${styles}`} title={title}>{children}</h1>
+    if(level === 2) return <h2 className={`font-bold text-2xl ${styles}`} title={title}>{children}</h2>
 }
