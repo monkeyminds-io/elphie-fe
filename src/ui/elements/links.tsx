@@ -9,13 +9,13 @@
 // =============================================================================
 import Link from 'next/link'
 import Image from 'next/image'
-import { redirect, usePathname, useRouter } from 'next/navigation';
-import clsx from 'clsx'
+import { usePathname } from 'next/navigation';
 import { StaticImport } from 'next/dist/shared/lib/get-img-props';
+import { userLogout } from '@/libs/actions/logout';
+import clsx from 'clsx'
 
 // IMAGES ////////////////
 import logoutIcon from '@/../public/icons/logout-icon.svg';
-import { userLogout } from '@/libs/actions/logout';
 
 // =============================================================================
 // Components Props

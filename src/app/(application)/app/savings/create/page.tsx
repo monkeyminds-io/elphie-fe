@@ -1,5 +1,5 @@
 // =============================================================================
-// File Name: (application)/app/goals/create/page.tsx
+// File Name: (application)/app/savings/create/page.tsx
 // File Description:
 // This file contains the code of the Create Goal Page
 // =============================================================================
@@ -17,13 +17,13 @@ import { Metadata } from 'next'
 // Page Metadata
 // =============================================================================
 export const metadata: Metadata = {
-    title: 'Goal Create'
+    title: 'Savings Create'
 }
 
 // =============================================================================
 // Page Component
 // =============================================================================
-export default function GoalCreatePage() {
+export default function SavingsCreatePage() {
 
     const breadcrumbs = [
         {
@@ -38,7 +38,7 @@ export default function GoalCreatePage() {
         },
         {
             label: 'Create',
-            href: '/app/goals/create',
+            href: '/app/savings/create',
             active: true
         }
     ];
