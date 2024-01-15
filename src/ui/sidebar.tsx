@@ -21,6 +21,7 @@ import accountsIcon from '@/../public/icons/accounts-icon.svg';
 import banksIcon from '@/../public/icons/bank-icon-gray.svg';
 import userIcon from '@/../public/icons/user-icon-gray.svg';
 import { getCookie } from '@/libs/cookies';
+import { User } from '@/libs/definitions';
 
 
 // =============================================================================
@@ -30,7 +31,7 @@ import { getCookie } from '@/libs/cookies';
 // =============================================================================
 // React Components
 // =============================================================================
-export const Sidebar = () => {
+export const Sidebar = ({user}: {user: User}) => {
 
     // Sidebar Links info
     const linksProps = [
@@ -41,17 +42,7 @@ export const Sidebar = () => {
         { href: '/app/banks', text: 'Banks', icon: banksIcon, },
     ]
 
-    // User data
-    const getUserInitials = (userFullName: string): string => {
-        const first = userFullName.substring(0, 1);
-        const space = userFullName.indexOf(' ') + 1;
-        const second = userFullName.substring(space, space + 1);
-        return first + second;
-    }
-    
-    const userFullName = `${getCookie('user-firstName')?.value} ${getCookie('user-lastName')?.value}`;
-    const userEmail = getCookie('user-email')?.value;
-    const userAvatar = getCookie('user-avatarPath')?.value || null;
+    const userFullname = `${user.firstName} ${user.lastName}`;
 
     return (
         <nav id="application-sidebar" className="hs-overlay hs-overlay-open:translate-x-0 -translate-x-full transition-all duration-300 transform hidden fixed top-0 start-0 bottom-0 z-[60] w-64 bg-white border-e border-gray-200 py-2 overflow-y-auto lg:block lg:translate-x-0 lg:end-auto lg:bottom-0 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300">
@@ -82,17 +73,17 @@ export const Sidebar = () => {
                     <div className="hs-tooltip-toggle max-w-xs p-3 flex flex-col gap-y-1 bg-white hover:bg-gray-100 rounded-lg transition-colors duration-[320ms] ease-in-out cursor-pointer">
                         
                         {/* TODO Load image dynamically if avatar_path is not null */}
-                        <span className="inline-flex items-center justify-center h-12 w-12 rounded-lg bg-indigo-200 text-md font-semibold text-indigo-800 leading-none overflow-hidden">
-                            {!userAvatar ? 
-                                getUserInitials(userFullName)
-                                : <Image src={userAvatar} alt={`${userFullName} avatar`}/>
+                        <span className="inline-flex items-center justify-center h-12 w-12 rounded-full bg-indigo-200 text-md font-semibold text-indigo-800 leading-none overflow-hidden">
+                            {!user.avatarPath ? 
+                                user.firstName.substring(0, 1) + user.lastName.substring(0, 1)
+                                : <Image src={user.avatarPath} alt={`${userFullname} avatar`}/>
                             }
                         </span>
                         
                         {/* User Content */}
                         <div className="grow">
-                            <Heading level={4} title={'User Name'}>{userFullName}</Heading>
-                            <Paragraph size='sm'>{userEmail}</Paragraph>
+                            <Paragraph size='md' styles='font-bold text-gray-800'>{userFullname}</Paragraph>
+                            <Paragraph size='sm'>{user.email}</Paragraph>
                         </div>
                         {/* End User Content */}
 

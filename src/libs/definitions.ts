@@ -8,29 +8,29 @@
 // =============================================================================
 export type User = {
     id: string,
-    firstname: string,
-    lastname: string,
+    firstName: string,
+    lastName: string,
     email: string,
     password: string,
-    account_type: string,
-    avatar_url: string,
-    created_on: string,
-    updated_on: string,
+    accountType: string,
+    avatarPath: string,
+    createdOn: string,
+    updatedOn: string,
 }
 
 export type BillingInfo = {
     id: string,
-    user_id: string,
-    address_line_1: string,
-    address_line_2: string,
+    userId: string,
+    addressLine1: string,
+    addressLine2: string,
     county: string,
     eircode: string,
-    card_name: string,
-    card_number: string,
-    card_expiry: string,
-    card_cvc: string,
-    created_on: string,
-    updated_on: string,
+    cardName: string,
+    cardNumber: string,
+    cardExpiry: string,
+    cardCvc: string,
+    createdOn: string,
+    updatedOn: string,
 }
 
 // =============================================================================

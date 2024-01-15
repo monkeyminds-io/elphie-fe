@@ -10,14 +10,14 @@
 // Components Imports
 // =============================================================================
 import Link from 'next/link'
-import { InputBlock, SelectBlock } from '../elements/inputs'
-import { SliderDot, SliderDotsWrapper, Slider, SliderNext, SliderPrev } from './slider'
-import { Paragraph } from '../elements/paragraphs'
+import { ChangeEvent } from 'react'
 import { useFormState } from 'react-dom'
 import { State, registerUser } from '@/libs/actions/register'
+import { formatCardExpiryInput, formatCardNumberInput, formatEircodeInput } from '@/libs/utiles'
+import { SliderDot, SliderDotsWrapper, Slider, SliderNext, SliderPrev } from './slider'
+import { InputBlock, SelectBlock } from '../elements/inputs'
 import { Heading } from '../elements/headings'
-import { formatCardExpiryInput, formatCardNumberInput, formatEircodeInput, regexps } from '@/libs/utiles'
-import { ChangeEvent } from 'react'
+import { Paragraph } from '../elements/paragraphs'
 
 // =============================================================================
 // React Components

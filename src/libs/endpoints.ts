@@ -12,6 +12,7 @@ const MAIN_API = process.env.API_DOMAIN;
 // Users Service Endpoints
 // =============================================================================
 export const createUser = () => `${MAIN_API}/users/create`;
+export const getUserBtId = (id: string) => `${MAIN_API}/users/get?id=${id}`;
 export const getUserByEmail = (email: string) => `${MAIN_API}/users/get?email=${email}`;
 export const updateUserPassword = (id: string) => `${MAIN_API}/users/update/${id}/password`;
 

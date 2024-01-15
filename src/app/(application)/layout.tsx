@@ -13,6 +13,8 @@ import { Sidebar } from '@/ui/sidebar';
 import { inter } from '@/libs/fonts';
 import '@/styles/globals.css'
 import { SidebarToggle } from '@/ui/sidebar-toggle';
+import { User } from '@/libs/definitions';
+import { getCookie } from '@/libs/cookies';
 
 // =============================================================================
 // Layout Props
@@ -40,13 +42,26 @@ children,
 }: {
 children: React.ReactNode
 }) {
-return (
+
+    const user: User = {
+        id: getCookie('user-id')?.value as string,
+        firstname: getCookie('user-firstName')?.value as string,
+        lastname: getCookie('user-lastName')?.value as string,
+        email: getCookie('user-email')?.value as string,
+        password: getCookie('user-password')?.value as string,
+        account_type: getCookie('user-accountType')?.value as string,
+        avatarPath: getCookie('user-avatarPath')?.value as string,
+        created_on: getCookie('user-createdOn')?.value as string,
+        updated_on: getCookie('user-updatedOn')?.value as string,
+    }
+    
+    return (
         <html lang='en'>
             <body className={`${inter.className} bg-gray-50`}>
                 {/* Sidebar Toggle */}
                 <SidebarToggle/>
                 {/* Sidebar */}
-                <Sidebar/>
+                <Sidebar user={user}/>
                 <main className='w-full pt-10 px-4 sm:px-6 md:px-8 lg:ps-72'>
                     {children}
                 </main>
