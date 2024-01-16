@@ -42,8 +42,17 @@ type AppInputPorps = {
     type?: string,
     name: string,
     placeholder: string,
+    max?: number,
+    isUppercase?: boolean,
     onChange?: ChangeEventHandler<HTMLInputElement>,
     position?: string,
+    defaultValue?: string,
+    errors: string[] | undefined
+}
+
+type AppSelectPorps = {
+    name: string,
+    options: string[],
     defaultValue?: string,
     errors: string[] | undefined
 }
@@ -51,11 +60,8 @@ type AppInputPorps = {
 // =============================================================================
 // Component Functions
 // =============================================================================
-const setBorderStyle = (errors: string[] | undefined) => {
-    if(typeof errors !== 'undefined') {
-        return errors.length > 0 ? 'border-red-500' : 'border-gray-200';
-    }
-    return 'border-gray-200';
+const setBorderStyle = (hasErrors: boolean) => {
+    return hasErrors ? 'border-red-500' : 'border-gray-200';
 }
 
 // =============================================================================
@@ -78,7 +84,7 @@ export const InputBlock = ({type = 'text', onChange = undefined, max, name, labe
                 aria-describedby={`${name}-error`}
                 onChange={typeof onChange !== 'undefined' ? onChange : () => {}}
                 maxLength={max}
-                className={`block p-[16px] w-full text-sm ${setBorderStyle(errors)} rounded-[16px] placeholder:text-gray-400 focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none`}/>
+                className={`block p-[16px] w-full text-sm ${setBorderStyle(typeof errors !== 'undefined')} rounded-[16px] placeholder:text-gray-400 focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none`}/>
                 
                 {/* Error Icon */}
                 {typeof errors !== 'undefined' ?
@@ -119,7 +125,7 @@ export const TextAreaBlock = ({rows, name, label, placeholder, errors}: TextArea
                 id={name}
                 placeholder={placeholder}
                 aria-describedby={`${name}-error`}
-                className={`block p-[16px] w-full text-sm ${setBorderStyle(errors)} rounded-[16px] placeholder:text-gray-400 focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none`}>
+                className={`block p-[16px] w-full text-sm ${setBorderStyle(typeof errors !== 'undefined')} rounded-[16px] placeholder:text-gray-400 focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none`}>
                 </textarea>
                 
                 {/* Error Icon */}
@@ -159,7 +165,7 @@ export const SelectBlock = ({name, label, placeholder, options, errors}: SelectB
                 name={name} 
                 id={name}
                 aria-describedby={`${name}-error`}
-                className={`block p-[16px] w-full text-sm ${setBorderStyle(errors)} rounded-[16px] focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none`}>
+                className={`block p-[16px] w-full text-sm ${setBorderStyle(typeof errors !== 'undefined')} rounded-[16px] focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none`}>
                 <option defaultValue={placeholder}>{placeholder}</option>
                     {options.map((option, index) => {
                         return <option value={option} key={index}>{option}</option>
@@ -190,7 +196,7 @@ export const SelectBlock = ({name, label, placeholder, options, errors}: SelectB
     )
 }
 
-export const AppInput = ({type = 'text', name, placeholder, onChange = undefined, position = '', defaultValue = '', errors}: AppInputPorps) => {
+export const AppInput = ({type = 'text', name, placeholder, max , isUppercase = false, onChange = undefined, position = '', defaultValue = '', errors}: AppInputPorps) => {
     return (
         <div className={`relative w-full`}>
             <input 
@@ -200,19 +206,47 @@ export const AppInput = ({type = 'text', name, placeholder, onChange = undefined
             aria-describedby={`${name}-error`}
             placeholder={placeholder}
             defaultValue={defaultValue}
-            className={`py-2 px-3 pe-11 block w-full border ${setBorderStyle(errors)} rounded-lg ${position === 'first' ? 'sm:rounded-l-lg sm:rounded-r-none' : ''} ${position === 'last' ? 'sm:rounded-l-none sm:rounded-r-lg' : ''} text-sm focus:z-10 focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none`}/>
+            maxLength={max}
+            onChange={onChange}
+            className={`py-2 px-3 pe-11 block w-full border ${setBorderStyle(typeof errors !== 'undefined')} rounded-lg ${position === 'first' ? 'sm:rounded-l-lg sm:rounded-r-none' : ''} ${position === 'last' ? 'sm:rounded-l-none sm:rounded-r-lg' : ''} text-sm ${isUppercase ? 'uppercase' : ''} placeholder:text-gray-400 placeholder:normal-case focus:z-10 focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none`}/>
 
             {/* Error Icon */}
-            {typeof errors !== 'undefined' ?
-                errors.length > 0 ? 
-                    <div className="absolute top-2 end-0 flex items-center pointer-events-none pe-3">
-                        <svg className="h-5 w-5 text-red-500" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
-                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
-                        </svg>
-                    </div>
-                    : ''
-                : ''
-            }
+            {<div className={`${typeof errors !== 'undefined' ? '' : 'hidden'} absolute top-2 end-0 flex items-center pointer-events-none pe-3`}>
+                <svg className="h-5 w-5 text-red-500" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
+                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
+                </svg>
+            </div>}
+
+            {/* Errors Block */}
+            <div id={`${name}-error`} aria-live="polite" aria-atomic="true">
+                {errors && errors.map((error: string) => <p className="mt-2 text-sm text-red-500" key={error}>{error}</p>)}
+            </div>
+            {/* End Errors Block */}
+        </div>
+    )
+}
+
+export const AppSelect = ({ name, options, defaultValue = 'County', errors = undefined }: AppSelectPorps) => {
+    return (
+        <div className={`relative w-full`}>
+            <select 
+            id={name} 
+            name={name}
+            aria-describedby={`${name}-error`}
+            defaultValue={defaultValue}
+            className={`py-2 px-3 pe-11 block w-full border ${setBorderStyle(typeof errors !== 'undefined')} rounded-lg text-sm placeholder:text-gray-400 focus:z-10 focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none`}>
+                <option defaultValue={defaultValue}>{defaultValue}</option>
+                {options.map((option, index) => {
+                    return <option value={option} key={index}>{option}</option>
+                })}
+            </select>
+
+            {/* Error Icon */}
+            {<div className={`${typeof errors !== 'undefined' ? '' : 'hidden'} absolute top-2 end-0 flex items-center pointer-events-none pe-3`}>
+                <svg className="h-5 w-5 text-red-500" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
+                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
+                </svg>
+            </div>}
 
             {/* Errors Block */}
             <div id={`${name}-error`} aria-live="polite" aria-atomic="true">

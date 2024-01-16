@@ -9,13 +9,12 @@
 // =============================================================================
 // Components Imports
 // =============================================================================
-import { ChangeEvent } from "react";
+import { ChangeEvent, MouseEvent } from "react";
 import { useFormState } from "react-dom";
-import Image from "next/image";
-import { AppInput } from "../elements/inputs"
-import { updateUser } from "@/libs/actions/general-info";
-import { User } from "@/libs/definitions";
 import { useSearchParams } from "next/navigation";
+import { AppInput } from "../elements/inputs"
+import { updateUser } from "@/libs/actions/update-user";
+import { User } from "@/libs/definitions";
 
 // =============================================================================
 // Components Props
@@ -24,13 +23,14 @@ import { useSearchParams } from "next/navigation";
 // =============================================================================
 // React Components
 // =============================================================================
-export const FormGeneralInfo = ({user}: {user: User | null}) => {
+export const FormGeneralInfo = ({user}: {user: User}) => {
 
+    // Set success message
     const searchParams = useSearchParams();
     const success = searchParams.get('success') || false;
-
+    
     // LOCAL VARIABLES ////////////////
-    const userFullname = `${user?.firstName} ${user?.lastName}` || 'User Name';
+    const userFullname = `${user.firstName} ${user.lastName}`;
 
     // EVENT HANDLERS ////////////////
     /**
@@ -67,27 +67,25 @@ export const FormGeneralInfo = ({user}: {user: User | null}) => {
     /**
      * Used to handle on click event of the cancel button
      */
-    const handleCancel = () => {
+    const handleCancel = (event: MouseEvent) => {
+        event.preventDefault();
         const form: HTMLFormElement | null = document?.querySelector('#form-general-info');
-        const cancelBtn: HTMLElement | null = document?.getElementById('cancel-button');
         const imageWrapper: HTMLDivElement | null = document?.querySelector('#profile-image-wrapper');
-        const image: HTMLImageElement | null = document?.querySelector('#new-profile-image');
-        if(cancelBtn !== null && imageWrapper !== null && image !== null) cancelBtn.onclick = () => {
-            form?.reset();
-            imageWrapper.removeChild(image);
-            if(user?.avatarPath) {
-                imageWrapper.innerHTML = '';
-                const userImage = document.createElement("img");
-                userImage.src = user.avatarPath;
-                userImage.alt = `${userFullname} avatar`;
-                userImage.id = 'new-profile-image';
-                imageWrapper.appendChild(userImage);
-            } else if(user) imageWrapper.innerHTML = user.firstName.substring(0, 1) + user.lastName.substring(0, 1);
+        if(imageWrapper !== null && form !== null) {
+            form.reset();
+            const image: HTMLImageElement | null = imageWrapper.querySelector('#new-profile-image');
+            if(image !== null) {
+                imageWrapper.removeChild(image);
+                imageWrapper.innerHTML = user.firstName.substring(0, 1) + user.lastName.substring(0, 1);
+            }
         }
     }
 
     // Data Validation object that will receive any errors on Submit in form of messages.
-    const initialState = { errors: {}, message: null!, success: null! };
+    const initialState = { errors: {}, message: null! };
+
+    // Adding the user Id to the updateUser action
+    const updateUserWithId = updateUser.bind(null, user.id);
 
     /**
      * Using the React function useFormState we can pass the function that is responsible for the actual action of the form
@@ -96,12 +94,12 @@ export const FormGeneralInfo = ({user}: {user: User | null}) => {
      *    1 -> The state variable that will contain the potential errors
      *    2 -> The dispatch method / function that points at the actual action function
      */
-    const [state, dispatch] = useFormState(updateUser, initialState);
+    const [state, dispatch] = useFormState(updateUserWithId, initialState);
 
     return (
         <form id="form-general-info" action={dispatch}>
             {/* Grid */}
-            <div className="grid sm:grid-cols-12 gap-4 sm:gap-8">
+            <div className="grid sm:grid-cols-12 gap-4 sm:gap-6">
                 <div className="sm:col-span-3">
                     <label className="inline-block text-sm text-gray-800 mt-2.5">
                         Profile photo
@@ -114,10 +112,7 @@ export const FormGeneralInfo = ({user}: {user: User | null}) => {
 
                         {/* Profile Image */}
                         <div id="profile-image-wrapper" className="inline-flex items-center justify-center h-24 w-24 rounded-full bg-indigo-200 text-2xl font-semibold text-indigo-800 leading-none overflow-hidden">
-                            {user?.avatarPath ? 
-                                <Image src={user.avatarPath} alt={`${userFullname} avatar`}/>
-                                : user !== null ? user.firstName.substring(0, 1) + user.lastName.substring(0, 1) : 'UN'
-                            }
+                            {user.firstName.substring(0, 1) + user.lastName.substring(0, 1)}
                         </div>
 
                         {/* Upload Photo Button */}
@@ -142,8 +137,8 @@ export const FormGeneralInfo = ({user}: {user: User | null}) => {
 
                 <div className="sm:col-span-9">
                     <div className="space-y-2 sm:flex sm:space-y-0">
-                        <AppInput name={"firstname"} placeholder={"First Name"} errors={state?.errors?.firstname} position={'first'} defaultValue={user?.firstName}/>
-                        <AppInput name={"lastname"} placeholder={"Last Name"} errors={state?.errors?.lastname} position={'last'} defaultValue={user?.lastName}/>
+                        <AppInput name={"firstname"} placeholder={"First Name"} errors={state?.errors?.firstname} position={'first'} defaultValue={user.firstName}/>
+                        <AppInput name={"lastname"} placeholder={"Last Name"} errors={state?.errors?.lastname} position={'last'} defaultValue={user.lastName}/>
                     </div>
                 </div>
                 {/* End Col */}
@@ -156,7 +151,7 @@ export const FormGeneralInfo = ({user}: {user: User | null}) => {
                 {/* End Col */}
 
                 <div className="sm:col-span-9">
-                    <AppInput name={"email"} placeholder={"Email address"} errors={state?.errors?.email} type={'email'} defaultValue={user?.email}/>
+                    <AppInput name={"email"} placeholder={"Email address"} errors={state?.errors?.email} type={'email'} defaultValue={user.email}/>
                 </div>
                 {/* End Col */}
 
@@ -168,7 +163,7 @@ export const FormGeneralInfo = ({user}: {user: User | null}) => {
                 {/* End Col */}
 
                 <div className="sm:col-span-9">
-                    <div className="space-y-2 sm:space-y-4">
+                    <div className="space-y-2">
                         <AppInput name={"currentPassword"} placeholder={"Enter current password"} errors={state?.errors?.currentPassword} type={'password'}/>
                         <AppInput name={"newPassword"} placeholder={"Enter new password"} errors={state?.errors?.newPassword} type={'password'}/>
                     </div>
@@ -183,10 +178,10 @@ export const FormGeneralInfo = ({user}: {user: User | null}) => {
                 {/* End Col */}
 
                 <div className="sm:col-span-9">
-                    <div className="space-y-2 sm:space-y-4">
+                    <div className="space-y-2">
                         <label htmlFor="calphie-plan"  className="flex rounded-lg shadow-sm cursor-pointer">
                             <span className="px-4 inline-flex items-center min-w-fit rounded-s-md border border-e-0 border-gray-200 bg-gray-50 text-sm text-gray-500">
-                                <input type="radio" id="calphie-plan" name="accountType" value='calphie' defaultChecked={user?.accountType === 'calphie' ? true : false}
+                                <input type="radio" id="calphie-plan" name="accountType" value='calphie' defaultChecked={user.accountType === 'calphie' ? true : false}
                                 className="shrink-0 border-gray-200 rounded-full text-indigo-600 focus:ring-indigo-500"/>
                             </span>
                             <div className="flex flex-row justify-between py-3 px-4 pe-11 w-full border border-gray-200 shadow-sm rounded-e-lg text-sm">
@@ -196,7 +191,7 @@ export const FormGeneralInfo = ({user}: {user: User | null}) => {
                         </label>
                         <label htmlFor="elphie-plan"  className="flex rounded-lg shadow-sm  cursor-pointer">
                             <span className="px-4 inline-flex items-center min-w-fit rounded-s-md border border-e-0 border-gray-200 bg-gray-50 text-sm text-gray-500">
-                                <input type="radio"  id="elphie-plan" name="accountType" value='elphie' defaultChecked={user?.accountType === 'elphie' ? true : false}
+                                <input type="radio"  id="elphie-plan" name="accountType" value='elphie' defaultChecked={user.accountType === 'elphie' ? true : false}
                                 className="shrink-0 border-gray-200 rounded-full text-indigo-600 focus:ring-indigo-500"/>
                             </span>
                             <div className="flex flex-row justify-between py-3 px-4 pe-11 w-full border border-gray-200 shadow-sm rounded-e-lg text-sm">
@@ -220,14 +215,20 @@ export const FormGeneralInfo = ({user}: {user: User | null}) => {
 
             <div className="mt-5 flex justify-end gap-x-2">
                 
+                {/* Success Block */}
+                <div aria-live="polite" aria-atomic="true">
+                    {success && <p className="mt-2 text-sm text-green-500">Changes saved successfully!!</p>}
+                </div>
+                {/* End Success Block */}
+
                 {/* Errors Block */}
                 <div aria-live="polite" aria-atomic="true">
-                    {(success && state?.errors === undefined) && <p className="mt-2 text-sm text-green-500">Changes saved successfully!!</p>}
+                    {state?.message && <p className="mt-2 text-sm text-red-500">{state.message}</p>}
                 </div>
                 {/* End Errors Block */}
 
                 {/* Cancel Button */}
-                <button type="button" id="cancel-button" onClick={handleCancel}
+                <button type="button" id="cancel-button" onClick={(e) => handleCancel(e)}
                 className="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none transition-colors duration-300 ease-in-out">
                 Cancel
                 </button>

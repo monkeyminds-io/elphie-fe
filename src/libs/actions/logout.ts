@@ -24,12 +24,8 @@ import { removeCookie } from '../cookies';
 export const userLogout = async (formData: FormData) => {
 
     // Remove all Cookies
-    if(typeof document !== 'undefined') {
-        const cookies = document.cookie.split(';');
-        cookies.forEach(cookie => {
-            removeCookie(cookie.substring(0, cookie.indexOf('=')));
-        })
-    } 
+    removeCookie('session-id');
+    removeCookie('user-id');
 
     // Redirect to Home page
     redirect(`${process.env.WEBSITE_DOMAIN}/`);

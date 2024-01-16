@@ -9,8 +9,9 @@
 import Image from 'next/image'
 import Link from 'next/link';
 import { LogoutLink, SidebarLink } from './elements/links';
-import { Heading } from './elements/headings';
 import { Paragraph } from './elements/paragraphs';
+import { getCookie } from '@/libs/cookies';
+import { getUserById } from '@/libs/endpoints';
 
 // Images ////////////////
 import logoIndigo from '@/../public/brand/logo-indigo.svg';
@@ -20,7 +21,6 @@ import transactionsIcon from '@/../public/icons/transaction-icon.svg';
 import accountsIcon from '@/../public/icons/accounts-icon.svg';
 import banksIcon from '@/../public/icons/bank-icon-gray.svg';
 import userIcon from '@/../public/icons/user-icon-gray.svg';
-import { getCookie } from '@/libs/cookies';
 import { User } from '@/libs/definitions';
 
 
@@ -31,7 +31,11 @@ import { User } from '@/libs/definitions';
 // =============================================================================
 // React Components
 // =============================================================================
-export const Sidebar = ({user}: {user: User}) => {
+export const Sidebar = async () => {
+
+    const response = await fetch(getUserById(getCookie('user-id')?.value as string), {cache: 'no-cache'});
+    const json = await response.json();
+    const user = json.data as User;
 
     // Sidebar Links info
     const linksProps = [
@@ -39,7 +43,6 @@ export const Sidebar = ({user}: {user: User}) => {
         { href: '/app/savings', text: 'Savings', icon: moneyIcon, },
         { href: '/app/transactions', text: 'Transactions', icon: transactionsIcon, },
         { href: '/app/accounts', text: 'Accounts', icon: accountsIcon, },
-        { href: '/app/banks', text: 'Banks', icon: banksIcon, },
     ]
 
     const userFullname = `${user.firstName} ${user.lastName}`;
@@ -74,10 +77,7 @@ export const Sidebar = ({user}: {user: User}) => {
                         
                         {/* TODO Load image dynamically if avatar_path is not null */}
                         <span className="inline-flex items-center justify-center h-12 w-12 rounded-full bg-indigo-200 text-md font-semibold text-indigo-800 leading-none overflow-hidden">
-                            {!user.avatarPath ? 
-                                user.firstName.substring(0, 1) + user.lastName.substring(0, 1)
-                                : <Image src={user.avatarPath} alt={`${userFullname} avatar`}/>
-                            }
+                            {user.firstName.substring(0, 1) + user.lastName.substring(0, 1)}
                         </span>
                         
                         {/* User Content */}

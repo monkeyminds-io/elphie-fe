@@ -107,8 +107,8 @@ export const FormRegister = () => {
             <div className="flex flex-col sm:flex-row gap-4 w-full">
                 <div className="flex flex-col gap-y-4 w-full">
                     <Paragraph styles='text-gray-800'>Address info:</Paragraph>
-                    <InputBlock name={'addressLine1'} label={'Address (line 1)'} placeholder={'Address (line 1)'} errors={state?.errors?.addressLine1} />
-                    <InputBlock name={'addressLine2'} label={'Address (line 2) OPTIONAL'} placeholder={'Address (line 2) OPTIONAL'} errors={state?.errors?.addressLine2} />
+                    <InputBlock name={'addressLine1'} label={'Address line 1'} placeholder={'Address line 1'} errors={state?.errors?.addressLine1} />
+                    <InputBlock name={'addressLine2'} label={'Address line 2 (Optional)'} placeholder={'Address line 2 (Optional)'} errors={state?.errors?.addressLine2} />
                     <div className="flex flex-col sm:flex-row gap-4 w-full">
                         <SelectBlock name={'county'} label={'County'} placeholder={'County'} errors={state?.errors?.county} 
                         options={[

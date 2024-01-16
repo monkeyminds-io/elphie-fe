@@ -12,6 +12,7 @@ import { z } from 'zod';
 import bcrypt from 'bcrypt';
 import { getUserByEmail } from '../endpoints';
 import { setCookie } from '../cookies';
+import { UserResponse } from '../definitions';
 
 // =============================================================================
 // Actions Form Schemas
@@ -60,12 +61,12 @@ export const handleLogin = async (initialState: State | undefined, formData: For
     try {
         // Get user by email
         const { email, password } = parsedCredentials.data;
-        const response = await fetch(getUserByEmail(email));
-        const json = await response.json();
+        const response = await fetch(getUserByEmail(email), { cache: 'no-cache'});
+        if(!response.ok) return { message: 'Wrong credentials...' }
 
         // Set user object
-        const user = await json.data;
-        if(user === null) return  { message: 'Ups... Failed to fetch User.' }
+        const json = await response.json() as UserResponse;
+        const user = json.data;
 
         // Check password
         const passwordsMatch = await bcrypt.compare(password, user.password);
@@ -74,12 +75,9 @@ export const handleLogin = async (initialState: State | undefined, formData: For
         // Set Session ID and User Data Cookies
         const sessionId = crypto.randomUUID();
         setCookie('session-id', sessionId);
-        Object.entries(user).forEach(([key, value]) => {
-            setCookie(`user-${key}`, value as string);
-        })
+        setCookie('user-id', user.id);
 
     } catch (error) {
-        console.error(error)
         return { message: 'Ups... Failed to login.' };
     }
 

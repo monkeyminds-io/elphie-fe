@@ -15,6 +15,7 @@ import '@/styles/globals.css'
 import { SidebarToggle } from '@/ui/sidebar-toggle';
 import { User } from '@/libs/definitions';
 import { getCookie } from '@/libs/cookies';
+import { getUserById } from '@/libs/endpoints';
 
 // =============================================================================
 // Layout Props
@@ -37,23 +38,11 @@ export const metadata: Metadata = {
 // =============================================================================
 // Layout Component
 // =============================================================================
-export default function DashboardLayout({
+export default async function DashboardLayout({
 children,
 }: {
 children: React.ReactNode
 }) {
-
-    const user: User = {
-        id: getCookie('user-id')?.value as string,
-        firstname: getCookie('user-firstName')?.value as string,
-        lastname: getCookie('user-lastName')?.value as string,
-        email: getCookie('user-email')?.value as string,
-        password: getCookie('user-password')?.value as string,
-        account_type: getCookie('user-accountType')?.value as string,
-        avatarPath: getCookie('user-avatarPath')?.value as string,
-        created_on: getCookie('user-createdOn')?.value as string,
-        updated_on: getCookie('user-updatedOn')?.value as string,
-    }
     
     return (
         <html lang='en'>
@@ -61,12 +50,13 @@ children: React.ReactNode
                 {/* Sidebar Toggle */}
                 <SidebarToggle/>
                 {/* Sidebar */}
-                <Sidebar user={user}/>
-                <main className='w-full pt-10 px-4 sm:px-6 md:px-8 lg:ps-72'>
+                <Sidebar/>
+                <main className='w-full p-4 sm:p-6 md:p-8 lg:ps-72'>
                     {children}
                 </main>
+                {/* Preline Script */}
+                <PrelineScript />
             </body>
-            <PrelineScript />
         </html>
     )
 }

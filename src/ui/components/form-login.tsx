@@ -41,8 +41,11 @@ export const FormLogin = () => {
                 Go to app
             </button>
 
-            {/* TODO Implement a global errors modal component */}
-            {/* { state?.message && <ModalError message={state?.message}/> } */}
+            {/* Errors Block */}
+            <div aria-live="polite" aria-atomic="true">
+                {state.message && <p className="mt-2 text-sm text-red-500">{state.message}</p>}
+            </div>
+            {/* End Errors Block */}
             
         </form>
     )
