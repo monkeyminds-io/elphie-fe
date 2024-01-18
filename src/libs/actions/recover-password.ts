@@ -71,7 +71,7 @@ export const findUserByEmail = async (prevState: State | undefined, formData: Fo
     }
 
     // Redirect to success page with id
-    // TODO In real world and as good preactice for security before redirecting and allowing user to update password
+    // NOTE In real world and as good preactice for security before redirecting and allowing user to update password
     // We would be sending an email to the provided email address (only if found in DB) with a token to confirm that
     // The user has also access to the given email account.
     redirect(`/recover-password/${id}/success`);

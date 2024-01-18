@@ -6,24 +6,23 @@
 // =============================================================================
 // Page Imports
 // =============================================================================
+import { savingsDelete } from '@/libs/actions/savings'
 import { getCookie } from '@/libs/cookies'
-import { getFilteredSavingsByUserId } from '@/libs/endpoints'
+import { Account, Savings, User } from '@/libs/definitions'
+import { deleteSavings, getAccountById, getFilteredSavingsByUserId, getUserById } from '@/libs/endpoints'
+import { euroFormatter } from '@/libs/utiles'
+import { AppSection } from '@/ui/base/layouts'
 import { EmptyTable } from '@/ui/components/empty-table'
-import { Pagination } from '@/ui/components/pagination'
-import { Search } from '@/ui/components/search'
-import { TableSavings } from '@/ui/components/table'
-import { Breadcrumbs } from '@/ui/elements/breadcrumbs'
-import { HeadingSmall } from '@/ui/elements/headings'
-import { Paragraph } from '@/ui/elements/paragraphs'
+import { Table, TableActionsColumn, TableColumn } from '@/ui/components/table'
 import { Metadata } from 'next'
-import Link from 'next/link'
+
 
 // =============================================================================
 // Page Props
 // =============================================================================
 type SavingsPageProps = {
     searchParams?: {
-        name?: string,
+        query?: string,
         page?: string,
     }
 }
@@ -46,75 +45,71 @@ export default async function SavingsPage({searchParams}: SavingsPageProps) {
         { label: 'Savings', href: '/app/savings', active: true }
     ];
 
+    // Headers array
+    const headers = ['Name', 'Current amount', 'Target amount', 'Remaining amount', 'Target date']
+
     // Variables for Paggination
     const ROWS_PER_PAGE = 8;
-    const name = searchParams?.name || '';
+    const query = searchParams?.query || '';
     const currentPage = searchParams?.page || 1;
     
+    // Set Offset and Limit for Paggination
     const offset = ROWS_PER_PAGE * (Number(currentPage) - 1);
     const limit = offset + ROWS_PER_PAGE;
 
-    const fetchResponse = await fetch(getFilteredSavingsByUserId(Number(getCookie('user-id')?.value), name));
-    const jsonResponse = await fetchResponse.json();
-    const data = jsonResponse.data;
+    // Fetch User
+    const userResponse = await fetch(getUserById(getCookie('user-id')?.value as string), {cache: 'no-cache'});
+    const userJson = await userResponse.json();
+    const user: User = userJson.data;
 
-    const pageData = data.slice(offset, limit);
-    const totalPages = Math.ceil(data.length / ROWS_PER_PAGE);
+    // Fetch Savings
+    const savingsResponse = await fetch(getFilteredSavingsByUserId(user.id, query), { cache: "no-cache" });
+    const savingsJson = await savingsResponse.json();
+    const rawSavings: Savings[] | undefined = savingsJson.data;
 
+    // Prepare data for pagination display
+    const savings: Savings[] = rawSavings === undefined ? [] : rawSavings.slice(offset, limit);
+    const totalPages = Math.ceil(rawSavings === undefined ? 0 : rawSavings.length / ROWS_PER_PAGE);
+
+    // TODO Use map to add new properties currentAmount and remiainingAmount to each saving object of the savings array.
+    
     return (
-        <div className='flex flex-col gap-4'>
-            <Breadcrumbs breadcrumbs={breadcrumbs}/>
-            
-            {/* Section */}
-            <section className="py-4">
-                {/* Card */}
-                <div className="flex flex-col -m-1.5 py-1 min-w-full align-middle bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
+        <AppSection 
+        breadcrumbs={breadcrumbs} 
+        heading={'Savings Management'} 
+        subheading={'Here you can review your saving goals and manage your progress.'} 
+        isTableSection={true} 
+        createAction={'/app/savings/create'}
+        currentPage={currentPage} 
+        totalPages={totalPages}> 
+            {savings.length === 0 ?
+                <EmptyTable item={"Saving"} createAction={'/app/savings/create'} userType={user.accountType}/>
+                : <Table headers={headers}>
+                    {savings.map((saving, index) => {
 
-                    {/* Header */}
-                    <div className="px-6 py-4 grid gap-3 md:flex md:justify-between md:items-center border-b border-gray-200 ">
-                        <div className='flex flex-col gap-y-2'>
-                            <HeadingSmall level={2} title={'Goals Main'}>Savings Management</HeadingSmall>
-                            <Paragraph size='sm'>Here you can manage your Financial Goals.</Paragraph>
-                        </div>
+                        return  (<tr key={index}>
+                                    {/* Name Column */}
+                                    <TableColumn data={saving.name}/>
 
-                        <div className="inline-flex gap-x-2">
-                            <Search queryName={'name'}/>
+                                    {/* current Amount Column */}
+                                    {/* TODO Display linked account balance */}
+                                    <TableColumn data={'€€25,000.00'}/>
 
-                            {/* TODO Add User type condition */}
-                            <Link className="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-indigo-600 text-white hover:bg-indigo-700 disabled:opacity-50 disabled:pointer-events-none" href="/app/savings/create">
-                                <svg className="flex-shrink-0 w-4 h-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
-                                Create
-                            </Link>
-                        </div>
-                    </div>
-                    {/* End Header */}
+                                    {/* Target Amount Column */}
+                                    <TableColumn data={euroFormatter.format(parseFloat(saving.targetAmount))}/>
 
-                    {/* Table */}
-                    <div className="overflow-x-scroll">
-                        {/* TODO Create table loading status */}
-                        {/* TODO Create table empty status with type of user condition */}
-                        {data.length === 0 ?
-                            <EmptyTable item={'Saving'}/>
-                            : <TableSavings data={pageData} name={name} currentPage={currentPage.toString()} service={'savings'}/>
-                        }
-                        
-                    </div>
-                    {/* End Table */}
+                                    {/* Remaining Column */}
+                                    {/* TODO Calculate with accountBalance - targetAmount */}
+                                    <TableColumn data={'-€25,000.00'}/>
 
-                    {/* Footer */}
-                    <div className="px-6 py-4 grid gap-3 md:flex md:justify-between md:items-center border-t border-gray-200 ">
-
-                        <Paragraph>
-                            Page <span className="font-semibold text-gray-800">{currentPage}</span> of <span className="font-semibold text-gray-800">{totalPages}</span>
-                        </Paragraph>
-
-                        <Pagination totalPages={totalPages}/>
-                    </div>
-                    {/* End Footer */}
-                </div>
-                {/* End Card */}
-            </section>
-            {/* Table Section */}
-        </div>
+                                    {/* Target Date Column */}
+                                    <TableColumn data={saving.targetDate}/>
+                                    
+                                    {/* Actions Column */}
+                                    <TableActionsColumn updateAction={`/app/savings/${saving.id}/edit`} deleteAction={savingsDelete.bind(null, saving.id, saving.name)} formId={'form-delete-saving'}/>
+                                </tr>)})}
+                </Table>
+            } 
+        </AppSection>
     )
 }

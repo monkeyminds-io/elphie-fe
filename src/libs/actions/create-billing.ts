@@ -78,8 +78,6 @@ export const createBilling = async (userId: string, prevState: State | undefined
 
     // Action Processes
     try {
-        
-        // TODO API call goes here
         // Encrypt Card Number
         let cardNumberSalt;
         let hashedCardNumber

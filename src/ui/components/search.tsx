@@ -17,7 +17,7 @@ import { useDebouncedCallback } from "use-debounce";
 // =============================================================================
 // React Components
 // =============================================================================
-export const Search = ({ queryName }: { queryName: string }) => {
+export const Search = () => {
 
     const searchParams = useSearchParams();
     const pathname = usePathname();
@@ -26,7 +26,7 @@ export const Search = ({ queryName }: { queryName: string }) => {
     const handleSearch : Function = useDebouncedCallback((query : string) => {
         const params = new URLSearchParams(searchParams);
         params.set('page', '1');
-        query ? params.set(queryName, query) : params.delete('name');
+        query ? params.set('query', query) : params.delete('name');
         replace(`${pathname}?${params.toString()}`);
     }, 300);
 
@@ -35,7 +35,10 @@ export const Search = ({ queryName }: { queryName: string }) => {
             <label htmlFor="search" className="sr-only">Search</label>
             <div className="relative">
                 <div className="absolute inset-y-0 start-0 flex items-center pointer-events-none z-20 ps-4">
-                <svg className="flex-shrink-0 h-4 w-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                    <svg className="flex-shrink-0 h-4 w-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <circle cx="11" cy="11" r="8"/>
+                        <path d="m21 21-4.3-4.3"/>
+                    </svg>
                 </div>
                 <input type="text" id="search" name="search" placeholder="Search"
                 onChange={(e) => {handleSearch(e.target.value)}}

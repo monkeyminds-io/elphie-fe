@@ -78,13 +78,13 @@ export type BillingResponse = {
 // =============================================================================
 export type Savings = {
     id: string,
-    user_id: string,
-    account_id: string,
+    userId: string,
+    accountId: string,
     name: string,
-    target_amount: string,
-    target_date: string,
-    created_on: string,
-    updated_on: string,
+    targetAmount: string,
+    targetDate: string,
+    createdOn: string,
+    updatedOn: string,
 }
 
 // =============================================================================
@@ -100,6 +100,44 @@ export type SavingsResponse = {
         targetDate: string,
         createdOn: string,
         updatedOn?: string | null,
+    },
+    ok: boolean,
+    message: string,
+    timestamp: string,
+    status: number,
+}
+
+// =============================================================================
+// Accounts Service Entities
+// =============================================================================
+export type Account = {
+    id: string,
+    userId: string,
+    name: string,
+    type: string,
+    iban: string,
+    balance: string,
+    currency: string,
+    plaidId: string,
+    createdOn: string,
+    updatedOn: string,
+}
+
+// =============================================================================
+// Accounts Response Types
+// =============================================================================
+export type AccountResponse = {
+    data: {
+        id: string,
+        userId: string,
+        name: string,
+        type: string,
+        iban: string,
+        balance: string,
+        currency: string,
+        plaidId: string | null,
+        createdOn: string,
+        updatedOn: string | null,
     },
     ok: boolean,
     message: string,

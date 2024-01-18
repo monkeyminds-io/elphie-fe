@@ -88,8 +88,6 @@ export const updateBilling = async (id: string, prevState: State | undefined, fo
 
     // Action Processes
     try {
-        
-        // TODO API call goes here
         // Encrypt Card Number
         let cardNumberSalt;
         let hashedCardNumber

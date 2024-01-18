@@ -6,7 +6,6 @@
 // =============================================================================
 // Utiles Imports
 // =============================================================================
-import { redirect } from "next/navigation";
 import { ChangeEvent } from "react";
 
 // =============================================================================
@@ -37,3 +36,9 @@ export const formatCardExpiryInput : Function = (event : ChangeEvent<HTMLInputEl
     const value : string = input.value;
     if(value.length === 2)  input.value = value + " / ";
 }
+
+export const euroFormatter = new Intl.NumberFormat('en-IE', {
+    style: "currency",
+    currency: "EUR",
+    minimumFractionDigits: 2,
+})

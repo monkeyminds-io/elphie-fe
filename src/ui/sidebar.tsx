@@ -75,7 +75,6 @@ export const Sidebar = async () => {
                 <div className="hs-tooltip inline-block [--trigger:click] sm:[--placement:top]">
                     <div className="hs-tooltip-toggle max-w-xs p-3 flex flex-col gap-y-1 bg-white hover:bg-gray-100 rounded-lg transition-colors duration-[320ms] ease-in-out cursor-pointer">
                         
-                        {/* TODO Load image dynamically if avatar_path is not null */}
                         <span className="inline-flex items-center justify-center h-12 w-12 rounded-full bg-indigo-200 text-md font-semibold text-indigo-800 leading-none overflow-hidden">
                             {user.firstName.substring(0, 1) + user.lastName.substring(0, 1)}
                         </span>

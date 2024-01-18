@@ -150,9 +150,11 @@ export default function DashboardPage() {
             </div>
             {/* End Card Section */}
             
+            {/* TODO Chart Section */}
             <div className="flex flex-col -m-1.5 p-8 min-w-full max-h-[480px] align-middle bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
                 <DashboardChart data={data}/>
             </div>
+            {/* End Chart Section */}
 
         </section>
     )

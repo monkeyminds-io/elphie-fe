@@ -64,15 +64,18 @@ export const FormGeneralInfo = ({user}: {user: User}) => {
         }
     }
 
+    // TODO Add to Cancel Button component
     /**
      * Used to handle on click event of the cancel button
      */
     const handleCancel = (event: MouseEvent) => {
+        // Default
         event.preventDefault();
         const form: HTMLFormElement | null = document?.querySelector('#form-general-info');
+        if(form !== null) form.reset();
+        // Callback
         const imageWrapper: HTMLDivElement | null = document?.querySelector('#profile-image-wrapper');
-        if(imageWrapper !== null && form !== null) {
-            form.reset();
+        if(imageWrapper !== null) {
             const image: HTMLImageElement | null = imageWrapper.querySelector('#new-profile-image');
             if(image !== null) {
                 imageWrapper.removeChild(image);
@@ -97,9 +100,12 @@ export const FormGeneralInfo = ({user}: {user: User}) => {
     const [state, dispatch] = useFormState(updateUserWithId, initialState);
 
     return (
+        // TODO Create AppForm component
         <form id="form-general-info" action={dispatch}>
+
             {/* Grid */}
             <div className="grid sm:grid-cols-12 gap-4 sm:gap-6">
+
                 <div className="sm:col-span-3">
                     <label className="inline-block text-sm text-gray-800 mt-2.5">
                         Profile photo
@@ -162,6 +168,7 @@ export const FormGeneralInfo = ({user}: {user: User}) => {
                 </div>
                 {/* End Col */}
 
+                {/* TODO Create Inputs Wrapper for App Form Main */}
                 <div className="sm:col-span-9">
                     <div className="space-y-2">
                         <AppInput name={"currentPassword"} placeholder={"Enter current password"} errors={state?.errors?.currentPassword} type={'password'}/>
@@ -170,6 +177,7 @@ export const FormGeneralInfo = ({user}: {user: User}) => {
                 </div>
                 {/* End Col */}
 
+                {/* TODO Create Label Component for App Form Main */}
                 <div className="sm:col-span-3">
                     <label htmlFor="accountType" className="inline-block text-sm text-gray-800 mt-2.5">
                         Upgrade account
@@ -214,8 +222,10 @@ export const FormGeneralInfo = ({user}: {user: User}) => {
             {/* End Grid */}
 
             <div className="mt-5 flex justify-end gap-x-2">
-                
+            
                 {/* Success Block */}
+                {/* TODO Make this to show in a conditional manner */}
+                {/* TODO Message to be a property for App Form main component */}
                 <div aria-live="polite" aria-atomic="true">
                     {success && <p className="mt-2 text-sm text-green-500">Changes saved successfully!!</p>}
                 </div>
@@ -228,12 +238,14 @@ export const FormGeneralInfo = ({user}: {user: User}) => {
                 {/* End Errors Block */}
 
                 {/* Cancel Button */}
+                {/* TODO Create component */}
                 <button type="button" id="cancel-button" onClick={(e) => handleCancel(e)}
                 className="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none transition-colors duration-300 ease-in-out">
                 Cancel
                 </button>
 
                 {/* Submit Button */}
+                {/* TODO Create component */}
                 <button type="submit" className="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-indigo-600 text-white hover:bg-indigo-700 disabled:opacity-50 disabled:pointer-events-none transition-colors duration-300 ease-in-out">
                 Save changes
                 </button>
