@@ -1,6 +1,6 @@
 'use client'
 // =============================================================================
-// File Name: ui/components/form-accounts.tsx
+// File Name: ui/components/form-transactions.tsx
 // File Description:
 // This file contains the code of the React Component for the Accounts General Form.
 // This form is used for Create and Edit pages.
@@ -8,10 +8,12 @@
 // =============================================================================
 // Components Imports
 // =============================================================================
-import { accountsCreate, accountsUpdate } from '@/libs/actions/accounts';
+import { transactionsCreate, transactionsUpdate } from '@/libs/actions/transactions';
 import { useFormState } from 'react-dom';
-import { AppInput, AppInputGroup } from '../elements/inputs';
-import { euroFormatter, formatIbanInput } from '@/libs/utiles';
+import { AppInput, AppInputGroup, AppSelect } from '../elements/inputs';
+import { euroFormatter } from '@/libs/utiles';
+import { Account } from '@/libs/definitions';
+
 
 // =============================================================================
 // Components Props
@@ -19,25 +21,29 @@ import { euroFormatter, formatIbanInput } from '@/libs/utiles';
 type FromProps = {
     id: string,
     action: string,
-    accountId?: string | null,
+    transactionId?: string | null,
     defaultValues?: {
-        name: string,
-        type: string,
-        iban: string,
-        balance: string,
+        accountId: string,
+        reference: string,
+        amount: string,
+        date: string,
     } | null,
-    buttonText: string
+    buttonText: string,
+    accounts: Account[]
 }
 // =============================================================================
 // React Components
 // =============================================================================
-export const FormAccounts = ({id, action, accountId = null, defaultValues = null, buttonText}: FromProps) => {
+export const FormTransactions = ({id, action, transactionId = null, defaultValues = null, buttonText, accounts}: FromProps) => {
+
+    const accountIds = accounts.map(account => account.id)
+    const accountNames = accounts.map(account => account.name)
 
     // Data Validation object that will receive any errors on Submit in form of messages.
     const initialState = { errors: {}, message: null! };
 
-    // Binding the Account Id in the accountsUpdate action
-    const accountsUpdateWithId = accountsUpdate.bind(null, accountId!)
+    // Binding the Account Id in the transactionsUpdate action
+    const transactionsUpdateWithId = transactionsUpdate.bind(null, transactionId!)
 
     /**
      * Using the React function useFormState we can pass the function that is responsible for the actual action of the form
@@ -46,7 +52,7 @@ export const FormAccounts = ({id, action, accountId = null, defaultValues = null
      *    1 -> The state variable that will contain the potential errors
      *    2 -> The dispatch method / function that points at the actual action function
      */
-    const [state, dispatch] = useFormState(action === 'create' ? accountsCreate : accountsUpdateWithId, initialState);
+    const [state, dispatch] = useFormState(action === 'create' ? transactionsCreate : transactionsUpdateWithId, initialState);
 
     return (
         <form id={id} action={dispatch} className='px-6 py-4'>
@@ -55,57 +61,57 @@ export const FormAccounts = ({id, action, accountId = null, defaultValues = null
             <div className="grid sm:grid-cols-12 gap-4 sm:gap-6">
 
                 <div className="sm:col-span-3">
-                    <label htmlFor="firstname" className="inline-block text-sm text-gray-800 mt-2.5">
-                        Account name
+                    <label htmlFor="accountId" className="inline-block text-sm text-gray-800 mt-2.5">
+                        Transaction account
                     </label>
                 </div>
                 {/* End Col */}
 
                 <div className="sm:col-span-9">
                     <div className="space-y-2 sm:flex sm:space-y-0">
-                        <AppInput name={"name"} placeholder={"Account Name"} errors={state?.errors?.name} defaultValue={defaultValues ? defaultValues.name : ''}/>
+                        <AppSelect name={'accountId'} optionsValue={accountIds} optionsText={accountNames} errors={state?.errors?.accountId} defaultValue={defaultValues ? defaultValues.accountId : 'Transaction account'}/>
                     </div>
                 </div>
                 {/* End Col */}
 
                 <div className="sm:col-span-3">
-                    <label htmlFor="firstname" className="inline-block text-sm text-gray-800 mt-2.5">
-                        Account type
+                    <label htmlFor="reference" className="inline-block text-sm text-gray-800 mt-2.5">
+                        Transaction reference
                     </label>
                 </div>
                 {/* End Col */}
 
                 <div className="sm:col-span-9">
                     <div className="space-y-2 sm:flex sm:space-y-0">
-                    <AppInput name={"type"} placeholder={"Account Type"} errors={state?.errors?.type} defaultValue={defaultValues ? defaultValues.type : ''}/>
+                    <AppInput name={"reference"} placeholder={"Transaction reference"} errors={state?.errors?.reference} defaultValue={defaultValues ? defaultValues.reference : ''}/>
                     </div>
                 </div>
                 {/* End Col */}
 
                 <div className="sm:col-span-3">
-                    <label htmlFor="firstname" className="inline-block text-sm text-gray-800 mt-2.5">
-                        Account IBAN
+                    <label htmlFor="amount" className="inline-block text-sm text-gray-800 mt-2.5">
+                        Transaction amount
                     </label>
                 </div>
                 {/* End Col */}
 
                 <div className="sm:col-span-9">
                     <div className="space-y-2 sm:flex sm:space-y-0">
-                    <AppInput name={"iban"} placeholder={"Account IBAN"} errors={state?.errors?.iban} defaultValue={defaultValues ? defaultValues.iban.match(/.{1,4}/g)?.join(' ').toString() : ''} onChange={(e) => formatIbanInput(e)} max={29}/>
+                    <AppInputGroup name={"amount"} placeholder={"Transaction amount"} errors={state?.errors?.date} defaultValue={defaultValues ? euroFormatter.format(parseFloat(defaultValues.amount)) : ''}/>
                     </div>
                 </div>
                 {/* End Col */}
 
                 <div className="sm:col-span-3">
-                    <label htmlFor="firstname" className="inline-block text-sm text-gray-800 mt-2.5">
-                        Account balance
+                    <label htmlFor="date" className="inline-block text-sm text-gray-800 mt-2.5">
+                        Transaction date
                     </label>
                 </div>
                 {/* End Col */}
 
                 <div className="sm:col-span-9">
                     <div className="space-y-2 sm:flex sm:space-y-0">
-                    <AppInputGroup name={"balance"} placeholder={"Account Balance"} errors={state?.errors?.balance} defaultValue={defaultValues ? euroFormatter.format(parseFloat(defaultValues.balance)) : ''}/>
+                    <AppInput type={'date'} name={"date"} placeholder={"Transaction date"} errors={state?.errors?.amount} defaultValue={defaultValues ? defaultValues.date : ''}/>
                     </div>
                 </div>
                 {/* End Col */}

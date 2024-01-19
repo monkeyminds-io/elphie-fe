@@ -46,13 +46,26 @@ type AppInputPorps = {
     isUppercase?: boolean,
     onChange?: ChangeEventHandler<HTMLInputElement>,
     position?: string,
-    defaultValue?: string,
+    defaultValue?: string | undefined,
     errors: string[] | undefined
 }
 
 type AppSelectPorps = {
     name: string,
-    options: string[],
+    optionsValue: string[],
+    optionsText: string[],
+    defaultValue?: string,
+    errors: string[] | undefined
+}
+
+type AppInputGroupPorps = {
+    type?: string,
+    name: string,
+    placeholder: string,
+    max?: number,
+    isUppercase?: boolean,
+    onChange?: ChangeEventHandler<HTMLInputElement>,
+    position?: string,
     defaultValue?: string,
     errors: string[] | undefined
 }
@@ -226,7 +239,7 @@ export const AppInput = ({type = 'text', name, placeholder, max , isUppercase = 
     )
 }
 
-export const AppSelect = ({ name, options, defaultValue = 'County', errors = undefined }: AppSelectPorps) => {
+export const AppSelect = ({ name, optionsValue, optionsText, defaultValue = undefined, errors = undefined }: AppSelectPorps) => {
     return (
         <div className={`relative w-full`}>
             <select 
@@ -235,11 +248,45 @@ export const AppSelect = ({ name, options, defaultValue = 'County', errors = und
             aria-describedby={`${name}-error`}
             defaultValue={defaultValue}
             className={`py-2 px-3 pe-11 block w-full border ${setBorderStyle(typeof errors !== 'undefined')} rounded-lg text-sm placeholder:text-gray-400 focus:z-10 focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none`}>
-                <option defaultValue={defaultValue}>{defaultValue}</option>
-                {options.map((option, index) => {
-                    return <option value={option} key={index}>{option}</option>
+                <option defaultValue={defaultValue || undefined}>{defaultValue}</option>
+                {optionsValue.map((value, index) => {
+                    return <option value={value} key={index}>{optionsText[index]}</option>
                 })}
             </select>
+
+            {/* Error Icon */}
+            {<div className={`${typeof errors !== 'undefined' ? '' : 'hidden'} absolute top-2 end-0 flex items-center pointer-events-none pe-3`}>
+                <svg className="h-5 w-5 text-red-500" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
+                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
+                </svg>
+            </div>}
+
+            {/* Errors Block */}
+            <div id={`${name}-error`} aria-live="polite" aria-atomic="true">
+                {errors && errors.map((error: string) => <p className="mt-2 text-sm text-red-500" key={error}>{error}</p>)}
+            </div>
+            {/* End Errors Block */}
+        </div>
+    )
+}
+
+export const AppInputGroup = ({type = 'text', name, placeholder, max , isUppercase = false, onChange = undefined, position = '', defaultValue = '', errors}: AppInputGroupPorps) => {
+    return (
+        <div className={`relative w-full`}>
+            <input 
+            type={type} 
+            id={name} 
+            name={name}
+            aria-describedby={`${name}-error`}
+            placeholder={placeholder}
+            defaultValue={defaultValue}
+            maxLength={max}
+            onChange={onChange}
+            className={`py-2 px-8 pe-11 block w-full border ${setBorderStyle(typeof errors !== 'undefined')} rounded-lg ${position === 'first' ? 'sm:rounded-l-lg sm:rounded-r-none' : ''} ${position === 'last' ? 'sm:rounded-l-none sm:rounded-r-lg' : ''} text-sm ${isUppercase ? 'uppercase' : ''} placeholder:text-gray-400 placeholder:normal-case focus:z-10 focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none`}/>
+
+            <div className="absolute inset-y-0 start-0 flex items-center pointer-events-none z-20 ps-4">
+                <span className="text-gray-500">€</span>
+            </div>
 
             {/* Error Icon */}
             {<div className={`${typeof errors !== 'undefined' ? '' : 'hidden'} absolute top-2 end-0 flex items-center pointer-events-none pe-3`}>

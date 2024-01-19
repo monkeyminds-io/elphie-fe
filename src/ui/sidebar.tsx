@@ -10,7 +10,6 @@ import Image from 'next/image'
 import Link from 'next/link';
 import { LogoutLink, SidebarLink } from './elements/links';
 import { Paragraph } from './elements/paragraphs';
-import { getCookie } from '@/libs/cookies';
 import { getUserById } from '@/libs/endpoints';
 
 // Images ////////////////
@@ -19,9 +18,9 @@ import dashboardIcon from '@/../public/icons/dashboard-icon.svg';
 import moneyIcon from '@/../public/icons/money-icon-gray.svg';
 import transactionsIcon from '@/../public/icons/transaction-icon.svg';
 import accountsIcon from '@/../public/icons/accounts-icon.svg';
-import banksIcon from '@/../public/icons/bank-icon-gray.svg';
 import userIcon from '@/../public/icons/user-icon-gray.svg';
 import { User } from '@/libs/definitions';
+import { cookies } from 'next/headers';
 
 
 // =============================================================================
@@ -33,7 +32,7 @@ import { User } from '@/libs/definitions';
 // =============================================================================
 export const Sidebar = async () => {
 
-    const response = await fetch(getUserById(getCookie('user-id')?.value as string), {cache: 'no-cache'});
+    const response = await fetch(getUserById(cookies().get('user-id')?.value as string), {cache: 'no-cache'});
     const json = await response.json();
     const user = json.data as User;
 

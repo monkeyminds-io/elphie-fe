@@ -11,8 +11,8 @@ import { redirect } from 'next/navigation';
 import { z } from 'zod';
 import bcrypt from 'bcrypt';
 import { getUserByEmail } from '../endpoints';
-import { setCookie } from '../cookies';
 import { UserResponse } from '../definitions';
+import { cookies } from 'next/headers';
 
 // =============================================================================
 // Actions Form Schemas
@@ -74,8 +74,8 @@ export const handleLogin = async (initialState: State | undefined, formData: For
 
         // Set Session ID and User Data Cookies
         const sessionId = crypto.randomUUID();
-        setCookie('session-id', sessionId);
-        setCookie('user-id', user.id);
+        cookies().set('session-id', sessionId);
+        cookies().set('user-id', user.id);
 
     } catch (error) {
         return { message: 'Ups... Failed to login.' };

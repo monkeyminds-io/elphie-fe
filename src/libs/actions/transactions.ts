@@ -1,8 +1,8 @@
 'use server'
 // =============================================================================
-// File Name: libs/actions/accounts.ts
+// File Name: libs/actions/transactions.ts
 // File Description:
-// This file contains the code for all the Accounts Service Form actions.
+// This file contains the code of the Transactions Service Forms Actions.
 // =============================================================================
 // =============================================================================
 // Actions Imports
@@ -10,17 +10,17 @@
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { z } from 'zod';
-import { createAccount, deleteAccount, updateAccount } from '../endpoints';
+import { createTransaction, deleteTransaction, updateTransaction } from '../endpoints';
 import { cookies } from 'next/headers';
 
 // =============================================================================
 // Actions Form Schemas
 // =============================================================================
 const FormSchema = z.object({
-    name: z.string(),
-    type: z.string(),
-    iban: z.string(),
-    balance: z.string(),
+    accountId: z.string(),
+    reference: z.string(),
+    amount: z.string(),
+    date: z.string(),
 });
 
 // =============================================================================
@@ -28,10 +28,10 @@ const FormSchema = z.object({
 // =============================================================================
 export type State = {
     errors?: {
-        name?: string[],
-        type?: string[],
-        iban?: string[],
-        balance?: string[],
+        accountId?: string[],
+        reference?: string[],
+        amount?: string[],
+        date?: string[],
     };
     message?: string | null;
 };
@@ -39,7 +39,7 @@ export type State = {
 // =============================================================================
 // Actions Functions
 // =============================================================================
-export const accountsCreate = async (prevState: State | undefined, formData: FormData) => {
+export const transactionsCreate = async (prevState: State | undefined, formData: FormData) => {
 
     // Validate fields
     const validatedFields = FormSchema.safeParse(
@@ -56,8 +56,8 @@ export const accountsCreate = async (prevState: State | undefined, formData: For
 
     // Action Processes
     try {
-        // Add account
-        const response = await fetch(createAccount(), {
+        // Add Transaction
+        const response = await fetch(createTransaction(), {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -65,31 +65,33 @@ export const accountsCreate = async (prevState: State | undefined, formData: For
             },
             body: JSON.stringify({
                 userId: cookies().get('user-id')?.value,
-                name: validatedFields.data.name,
-                type: validatedFields.data.type,
-                iban: validatedFields.data.iban,
-                balance: parseFloat(validatedFields.data.balance.replace(',', ''))
+                accountId: validatedFields.data.accountId,
+                reference: validatedFields.data.reference,
+                amount: validatedFields.data.amount.replace(',', ''),
+                date: validatedFields.data.date
             })
         })
         const json = await response.json();
 
-        if(!json.ok) return { message: "Failed to create Bank Account."}
+        if(!json.ok) return { message: "Invalid data. Failed to submit form."}
 
     } catch (error) {
-        return { message: 'Failed to create Bank Account.' }
+        return { message: 'Server Error. Failed to submit form.' }
     }
 
-    // Redirect to and refresh main Accounts page
-    revalidatePath('/app/accounts');
-    redirect('/app/accounts');
+    // Redirect to and refresh main Transactions page
+    revalidatePath('/app/transactions');
+    redirect('/app/transactions');
 }
 
-export const accountsUpdate = async (id: string, prevState: State | undefined, formData: FormData) => {
+export const transactionsUpdate = async (id: string, prevState: State | undefined, formData: FormData) => {
 
     // Validate fields
     const validatedFields = FormSchema.safeParse(
         Object.fromEntries(formData.entries())
     )
+
+    console.log(validatedFields);
 
     // Sending errors if any
     if(!validatedFields.success) {
@@ -101,46 +103,48 @@ export const accountsUpdate = async (id: string, prevState: State | undefined, f
 
     // Action Processes
     try {
-        // Update account
-        const response = await fetch(updateAccount(id), {
+        // Update Transaction
+        const response = await fetch(updateTransaction(id), {
             method: 'PUT',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                name: validatedFields.data.name,
-                type: validatedFields.data.type,
-                iban: validatedFields.data.iban,
-                balance: parseFloat(validatedFields.data.balance.replace(',', ''))
+                accountId: validatedFields.data.accountId,
+                reference: validatedFields.data.reference,
+                amount: validatedFields.data.amount.replace(',', ''),
+                date: validatedFields.data.date
             })
         })
         const json = await response.json();
 
-        if(!json.ok) return { message: "Failed to update Bank Account." }
+        console.log(json);
+
+        if(!json.ok) return { message: "Invalid data. Failed to submit form." }
 
     } catch (error) {
-        return { message: 'Failed to update Bank Account.' }
+        return { message: 'Server Error. Failed to submit form.' }
     }
 
-    // Redirect to and refresh main Accounts page
-    revalidatePath('/app/accounts');
-    redirect('/app/accounts');
+    // Redirect to and refresh main Transactions page
+    revalidatePath('/app/transactions');
+    redirect('/app/transactions');
 }
 
-export const accountsDelete = async (id: string) => {
+export const transactionsDelete = async (id: string) => {
     // Action Processes
     try {
-        await fetch(deleteAccount(id), {
+        await fetch(deleteTransaction(id), {
             method: 'DELETE',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             }
         })
-        revalidatePath('/app/accounts');
-        return {success: `Account deleted ok.`}
+        revalidatePath('/app/transactions');
+        return {success: `Transaction deleted ok.`}
     } catch (error) {
-        return { message: 'Failed to delete Account.' }
+        return { message: 'Failed to delete Transaction.' }
     }
 }

@@ -6,6 +6,9 @@
 // =============================================================================
 // Components Imports
 // =============================================================================
+import { accountsDelete } from '@/libs/actions/accounts';
+import { savingsDelete } from '@/libs/actions/savings';
+import { transactionsDelete } from '@/libs/actions/transactions';
 import Link from 'next/link'
 import { ReactNode } from 'react'
 
@@ -19,7 +22,8 @@ type TableProps = {
 
 type TableActionsColumnProps = { 
     updateAction: string, 
-    deleteAction: () => Promise<{ success: string; message?: undefined; } | { message: string; success?: undefined; }>, 
+    deleteAction: string,
+    deleteId: string, 
     formId: string
 }
 // =============================================================================
@@ -51,17 +55,34 @@ export const Table = ({ children, headers }: TableProps) => {
     )
 }
 
-export const TableColumn = ({ data }: { data: string | undefined }) => {
+export const TableColumn = ({ data, styles = '' }: { data: string | undefined, styles?: string }) => {
     return (
         <td className="h-px w-px whitespace-nowrap">
-            <div className="px-6 py-3 text-sm text-gray-600">
+            <div className={`px-6 py-3 text-sm text-gray-600 ${styles}`}>
                 {data}
             </div>
         </td>
     )
 }
 
-export const TableActionsColumn = ({ updateAction, deleteAction, formId }: TableActionsColumnProps) => {
+export const TableActionsColumn = ({ updateAction, deleteAction, deleteId, formId }: TableActionsColumnProps) => {
+
+    let action;
+
+    switch(deleteAction) {
+        case 'account':
+            action = accountsDelete.bind(null, deleteId);
+            break;
+        case 'transaction':
+            action = transactionsDelete.bind(null, deleteId);
+            break;
+        case 'saving':
+            action = savingsDelete.bind(null, deleteId);
+            break;
+        default:
+            break;
+    }
+    
     return (
         <td className="h-px w-px whitespace-nowrap">
             <div className="hs-dropdown relative inline-block [--placement:bottom-right] px-6 py-1.5">
@@ -78,16 +99,16 @@ export const TableActionsColumn = ({ updateAction, deleteAction, formId }: Table
                 <div className="hs-dropdown-menu transition-[opacity,margin] duration hs-dropdown-open:opacity-100 opacity-0 hidden divide-y divide-gray-200 min-w-[10rem] z-10 bg-white shadow-2xl rounded-lg p-2 mt-2" aria-labelledby="hs-table-dropdown-1">
                     <div className="py-2 first:pt-0 last:pb-0">
                         <Link href={updateAction} className="flex items-center gap-x-3 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:ring-2 focus:ring-indigo-500 transition-colors duration-300 ease-in-out">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <svg className="flex-shrink-0 w-4 h-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                 <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/>
                                 <path d="m15 5 4 4"/>
                             </svg>
                             Edit
                         </Link>
                     </div>
-                    <form id={formId} action={deleteAction} className="py-2 first:pt-0 last:pb-0">
+                    <form id={formId} action={action} className="py-2 first:pt-0 last:pb-0">
                         <button type='submit' className="flex items-center gap-x-3 py-2 px-3 w-full rounded-lg text-sm text-red-600 hover:bg-gray-100 focus:ring-2 focus:ring-indigo-500 transition-colors duration-300 ease-in-out">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <svg className="flex-shrink-0 w-4 h-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                 <path d="M3 6h18"/>
                                 <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/>
                                 <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/>

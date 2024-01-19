@@ -38,7 +38,11 @@ export const formatCardExpiryInput : Function = (event : ChangeEvent<HTMLInputEl
 }
 
 export const euroFormatter = new Intl.NumberFormat('en-IE', {
-    style: "currency",
-    currency: "EUR",
     minimumFractionDigits: 2,
 })
+
+export const formatIbanInput: Function = (event: ChangeEvent<HTMLInputElement>): void => {
+    const input : HTMLInputElement | null = event.target;
+    const value : string = input.value;
+    if(value.length === 4 || value.length === 9 || value.length === 14 || value.length === 19 || value.length === 24) input.value = value + " ";
+}

@@ -6,21 +6,16 @@
 // =============================================================================
 // Page Imports
 // =============================================================================
-import { getCookie } from '@/libs/cookies'
+import { Metadata } from 'next'
+import { cookies } from 'next/headers'
 import { BillingInfo, User } from '@/libs/definitions'
 import { getBillingInfoByUserId, getUserById } from '@/libs/endpoints'
-import { FormBillingInfoUpdate, FormBillingInfoCreate } from '@/ui/components/form-billing-info'
-import { FormDeleteAccount } from '@/ui/components/form-delete-account'
-import { FormGeneralInfo } from '@/ui/components/form-general-info'
 import { Breadcrumbs } from '@/ui/elements/breadcrumbs'
 import { Heading, HeadingSmall } from '@/ui/elements/headings'
-import { AppInput } from '@/ui/elements/inputs'
 import { Paragraph } from '@/ui/elements/paragraphs'
-import { Metadata } from 'next'
-
-// =============================================================================
-// Page Props
-// =============================================================================
+import { FormGeneralInfo } from '@/ui/components/form-general-info'
+import { FormBillingInfoUpdate, FormBillingInfoCreate } from '@/ui/components/form-billing-info'
+import { FormDeleteAccount } from '@/ui/components/form-delete-account'
 
 // =============================================================================
 // Page Metadata
@@ -39,7 +34,7 @@ export default async function MyAccountPage() {
         { label: 'My Account', href: '/my-account', active: true }
     ]
 
-    const userResponse = await fetch(getUserById(getCookie('user-id')?.value as string), {cache: 'no-cache'});
+    const userResponse = await fetch(getUserById(cookies().get('user-id')?.value as string), {cache: 'no-cache'});
     const userJson = await userResponse.json();
     const user: User = userJson.data;
 

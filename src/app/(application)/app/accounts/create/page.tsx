@@ -6,10 +6,9 @@
 // =============================================================================
 // Page Imports
 // =============================================================================
-import { getCookie } from '@/libs/cookies'
+import { Metadata } from 'next'
 import { AppSection } from '@/ui/base/layouts'
 import { FormAccounts } from '@/ui/components/form-accounts'
-import { Metadata } from 'next'
 
 // =============================================================================
 // Page Props

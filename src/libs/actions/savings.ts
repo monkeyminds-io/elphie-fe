@@ -8,19 +8,20 @@
 // Actions Imports
 // =============================================================================
 import { revalidatePath } from 'next/cache';
-import { redirect } from 'next/navigation';
 import { z } from 'zod';
-import { deleteSavings } from '../endpoints';
+import { createSavings, createTransaction, deleteSavings, updateSavings, updateTransaction } from '../endpoints';
+import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
 
 // =============================================================================
 // Actions Form Schemas
 // =============================================================================
 const FormSchema = z.object({
-    id: z.string(),
+    name: z.string(),
+    accountId: z.string(),
+    targetAmount: z.string(),
+    targetDate: z.string(),
 });
-
-// Form Schema Omits ////////////////
-const actionForm = FormSchema.omit({id: true});
 
 // =============================================================================
 // Actions Types
@@ -33,7 +34,102 @@ export type State = {
 // =============================================================================
 // Actions Functions
 // =============================================================================
-export const savingsDelete = async (id: string, name: string) => {
+export const savingsCreate = async (prevState: State | undefined, formData: FormData) => {
+
+    // Validate fields
+    const validatedFields = FormSchema.safeParse(
+        Object.fromEntries(formData.entries())
+    )
+
+    // Sending errors if any
+    if(!validatedFields.success) {
+        return {
+            errors: validatedFields.error.flatten().fieldErrors,
+            message: 'Falied to submit form.',
+        }
+    }
+
+    // Action Processes
+    try {
+        // Add Savings
+        const response = await fetch(createSavings(), {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                userId: cookies().get('user-id')?.value,
+                accountId: validatedFields.data.accountId,
+                name: validatedFields.data.name,
+                targetAmount: validatedFields.data.targetAmount.replace(',', ''),
+                targetDate: validatedFields.data.targetDate
+            })
+        })
+        const json = await response.json();
+
+        console.log(json);
+
+        if(!json.ok) return { message: "Invalid data. Failed to submit form."}
+
+    } catch (error) {
+        return { message: 'Server Error. Failed to submit form.' }
+    }
+
+    // Redirect to and refresh main Savings page
+    revalidatePath('/app/savings');
+    redirect('/app/savings');
+}
+
+export const savingsUpdate = async (id: string, prevState: State | undefined, formData: FormData) => {
+
+    // Validate fields
+    const validatedFields = FormSchema.safeParse(
+        Object.fromEntries(formData.entries())
+    )
+
+    console.log(validatedFields);
+
+    // Sending errors if any
+    if(!validatedFields.success) {
+        return {
+            errors: validatedFields.error.flatten().fieldErrors,
+            message: 'Falied to submit form.',
+        }
+    }
+
+    // Action Processes
+    try {
+        // Update Savings
+        const response = await fetch(updateSavings(id), {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                accountId: validatedFields.data.accountId,
+                name: validatedFields.data.name,
+                targetAmount: validatedFields.data.targetAmount.replace(',', ''),
+                targetDate: validatedFields.data.targetDate
+            })
+        })
+        const json = await response.json();
+
+        console.log(json);
+
+        if(!json.ok) return { message: "Invalid data. Failed to submit form." }
+
+    } catch (error) {
+        return { message: 'Server Error. Failed to submit form.' }
+    }
+
+    // Redirect to and refresh main Savings page
+    revalidatePath('/app/savings');
+    redirect('/app/savings');
+}
+
+export const savingsDelete = async (id: string) => {
     // Action Processes
     try {
         await fetch(deleteSavings(id), {
@@ -44,7 +140,7 @@ export const savingsDelete = async (id: string, name: string) => {
             }
         })
         revalidatePath('/app/savings');
-        return {success: `Saving ${name} was deleted ok.`}
+        return {success: `Saving deleted ok.`}
     } catch (error) {
         return { message: 'Failed to delete Saving.' }
     }

@@ -1,17 +1,17 @@
 // =============================================================================
-// File Name: (application)/app/savings/create/page.tsx
+// File Name: (application)/app/transactions/create/page.tsx
 // File Description:
-// This file contains the code of the Create Goal Page
+// This file contains the code of the Create Account page of the App.
 // =============================================================================
 // =============================================================================
 // Page Imports
 // =============================================================================
-import { Account } from '@/libs/definitions';
-import { getFilteredAccountsByUserId } from '@/libs/endpoints';
-import { AppSection } from '@/ui/base/layouts';
-import { FormSavings } from '@/ui/components/form-savings';
 import { Metadata } from 'next'
-import { cookies } from 'next/headers';
+import { AppSection } from '@/ui/base/layouts'
+import { FormTransactions } from '@/ui/components/form-transactions'
+import { Account } from '@/libs/definitions'
+import { getFilteredAccountsByUserId } from '@/libs/endpoints'
+import { cookies } from 'next/headers'
 
 // =============================================================================
 // Page Props
@@ -21,19 +21,20 @@ import { cookies } from 'next/headers';
 // Page Metadata
 // =============================================================================
 export const metadata: Metadata = {
-    title: 'Savings Create'
+    title: 'Create Transaction'
 }
 
 // =============================================================================
 // Page Component
 // =============================================================================
-export default async function SavingsCreatePage() {
+export default async function CreateTransactionPage() {
 
+    // Setting the breadcrumbs array
     const breadcrumbs = [
-        { label: 'App', href: '#', active: false },
-        { label: 'Savings', href: '/app/savings', active: false },
-        { label: 'Create', href: '/app/savings/create', active: true }
-    ];
+        { label: "App", href: "#", active: false },
+        { label: "Transactions", href: "/app/transactions", active: false },
+        { label: "Create", href: "/app/transactions/create", active: true },
+    ]
 
     // Fetch Accounts
     const accountsResponse = await fetch(getFilteredAccountsByUserId(cookies().get('user-id')?.value as string, ''), { cache: "no-cache" });
@@ -41,8 +42,8 @@ export default async function SavingsCreatePage() {
     const accounts: Account[] | undefined = accountsJson.data;
 
     return (
-        <AppSection breadcrumbs={breadcrumbs} heading={'Create Savings'} subheading={'Here you can create a new Savings.'} isTableSection={false} createAction={'#'}>
-            <FormSavings id={'form-savings-create'} action={'create'} buttonText={'Create Savings'} accounts={accounts!}/>
+        <AppSection breadcrumbs={breadcrumbs} heading={'Create Transaction'} subheading={'Here you can create a new Transaction.'} isTableSection={false} createAction={'#'}>
+            <FormTransactions id={'form-transactions-create'} action={'create'} buttonText={'Create Transaction'} accounts={accounts!}/>
         </AppSection>
     )
 }

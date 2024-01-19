@@ -7,14 +7,16 @@
 // Page Imports
 // =============================================================================
 import { savingsDelete } from '@/libs/actions/savings'
-import { getCookie } from '@/libs/cookies'
 import { Account, Savings, User } from '@/libs/definitions'
-import { deleteSavings, getAccountById, getFilteredSavingsByUserId, getUserById } from '@/libs/endpoints'
+import { getFilteredAccountsByUserId, getFilteredSavingsByUserId, getUserById } from '@/libs/endpoints'
 import { euroFormatter } from '@/libs/utiles'
 import { AppSection } from '@/ui/base/layouts'
 import { EmptyTable } from '@/ui/components/empty-table'
 import { Table, TableActionsColumn, TableColumn } from '@/ui/components/table'
+import { Loading } from '@/ui/loading'
 import { Metadata } from 'next'
+import { cookies } from 'next/headers'
+import { Suspense } from 'react'
 
 
 // =============================================================================
@@ -58,9 +60,14 @@ export default async function SavingsPage({searchParams}: SavingsPageProps) {
     const limit = offset + ROWS_PER_PAGE;
 
     // Fetch User
-    const userResponse = await fetch(getUserById(getCookie('user-id')?.value as string), {cache: 'no-cache'});
+    const userResponse = await fetch(getUserById(cookies().get('user-id')?.value as string), {cache: 'no-cache'});
     const userJson = await userResponse.json();
     const user: User = userJson.data;
+
+    // Fetch Accounts
+    const accountsResponse = await fetch(getFilteredAccountsByUserId(user.id, ''), { cache: "no-cache" });
+    const accountsJson = await accountsResponse.json();
+    const accounts: Account[] | undefined = accountsJson.data;
 
     // Fetch Savings
     const savingsResponse = await fetch(getFilteredSavingsByUserId(user.id, query), { cache: "no-cache" });
@@ -84,31 +91,31 @@ export default async function SavingsPage({searchParams}: SavingsPageProps) {
         totalPages={totalPages}> 
             {savings.length === 0 ?
                 <EmptyTable item={"Saving"} createAction={'/app/savings/create'} userType={user.accountType}/>
-                : <Table headers={headers}>
-                    {savings.map((saving, index) => {
-
-                        return  (<tr key={index}>
+                : <Suspense fallback={<Loading/>}>
+                    <Table headers={headers}>
+                        {savings.map((saving, index) => {
+                            const account = accounts!.find(account => account.id === saving.accountId);
+                            return  (<tr key={index}>
                                     {/* Name Column */}
                                     <TableColumn data={saving.name}/>
 
                                     {/* current Amount Column */}
-                                    {/* TODO Display linked account balance */}
-                                    <TableColumn data={'€€25,000.00'}/>
+                                    <TableColumn styles={'text-green-500'} data={`€ ${euroFormatter.format(parseFloat(account!.balance))}`}/>
 
                                     {/* Target Amount Column */}
-                                    <TableColumn data={euroFormatter.format(parseFloat(saving.targetAmount))}/>
+                                    <TableColumn data={`€ ${euroFormatter.format(parseFloat(saving.targetAmount))}`}/>
 
                                     {/* Remaining Column */}
-                                    {/* TODO Calculate with accountBalance - targetAmount */}
-                                    <TableColumn data={'-€25,000.00'}/>
+                                    <TableColumn styles={'text-red-500'} data={`€ ${euroFormatter.format(parseFloat(account!.balance) - parseFloat(saving.targetAmount))}`}/>
 
                                     {/* Target Date Column */}
-                                    <TableColumn data={saving.targetDate}/>
+                                    <TableColumn data={new Date(saving.targetDate).toDateString()}/>
                                     
                                     {/* Actions Column */}
-                                    <TableActionsColumn updateAction={`/app/savings/${saving.id}/edit`} deleteAction={savingsDelete.bind(null, saving.id, saving.name)} formId={'form-delete-saving'}/>
+                                    <TableActionsColumn updateAction={`/app/savings/${saving.id}/edit`} deleteAction={'savings'} formId={'form-delete-saving'} deleteId={saving.id}/>
                                 </tr>)})}
-                </Table>
+                    </Table>
+                </Suspense>
             } 
         </AppSection>
     )

@@ -6,15 +6,17 @@
 // =============================================================================
 // Page Imports
 // =============================================================================
-import { accountsDelete } from '@/libs/actions/accounts'
-import { getCookie } from '@/libs/cookies'
+import { Metadata } from 'next'
+import { cookies } from 'next/headers'
 import { Account, User } from '@/libs/definitions'
 import { getFilteredAccountsByUserId, getUserById } from '@/libs/endpoints'
 import { euroFormatter } from '@/libs/utiles'
 import { AppSection } from '@/ui/base/layouts'
-import { EmptyTable } from '@/ui/components/empty-table'
+import { accountsDelete } from '@/libs/actions/accounts'
 import { Table, TableActionsColumn, TableColumn } from '@/ui/components/table'
-import { Metadata } from 'next'
+import { EmptyTable } from '@/ui/components/empty-table'
+import { Loading } from '@/ui/loading'
+import { Suspense } from 'react'
 
 // =============================================================================
 // Page Props
@@ -57,7 +59,7 @@ export default async function AccountsPage({searchParams}: PageProps) {
     const limit = offset + ROWS_PER_PAGE;
 
     // Fetch User
-    const userResponse = await fetch(getUserById(getCookie('user-id')?.value as string), {cache: 'no-cache'});
+    const userResponse = await fetch(getUserById(cookies().get('user-id')?.value as string), {cache: 'no-cache'});
     const userJson = await userResponse.json();
     const user: User = userJson.data;
 
@@ -80,30 +82,33 @@ export default async function AccountsPage({searchParams}: PageProps) {
         currentPage={currentPage}
         totalPages={totalPages}>
             {accounts.length === 0 ?
-                <EmptyTable item={"Saving"} createAction={'/app/savings/create'} userType={user.accountType}/>
-                : <Table headers={headers}>
-                    {accounts.map((account, index) => {
-                        return  (<tr key={index}>
-                                    
-                                    {/* Name Column */}
-                                    <TableColumn data={account.name}/>
+                <EmptyTable item={"Account"} createAction={'/app/accounts/create'} userType={user.accountType}/>
+                : <Suspense fallback={<Loading/>}>
 
-                                    {/* Type Column */}
-                                    <TableColumn data={account.type}/>
+                    <Table headers={headers}>
+                        {accounts.map((account, index) => {
+                            return  (<tr key={index}>
+                                        
+                                        {/* Name Column */}
+                                        <TableColumn data={account.name}/>
 
-                                    {/* Iban Column */}
-                                    <TableColumn data={account.iban.match(/.{1,4}/g)?.join(' ').toString()}/>
+                                        {/* Type Column */}
+                                        <TableColumn data={account.type}/>
 
-                                    {/* Balance Column */}
-                                    <TableColumn data={euroFormatter.format(parseFloat(account.balance))}/>
+                                        {/* Iban Column */}
+                                        <TableColumn data={account.iban.match(/.{1,4}/g)?.join(' ').toString()}/>
 
-                                    {/* Last Update Column */}
-                                    <TableColumn data={account.updatedOn === null ? new Date(account.createdOn).toDateString() : new Date(account.updatedOn).toDateString()}/>
-                                    
-                                    {/* Actions Column */}
-                                    <TableActionsColumn updateAction={`/app/accounts/${account.id}/edit`} deleteAction={accountsDelete.bind(null, account.id, account.name)} formId={'form-delete-account'}/>
-                                </tr>)})}
-                </Table>
+                                        {/* Balance Column */}
+                                        <TableColumn data={`€ ${euroFormatter.format(parseFloat(account.balance))}`}/>
+
+                                        {/* Last Update Column */}
+                                        <TableColumn data={account.updatedOn === null ? new Date(account.createdOn).toDateString() : new Date(account.updatedOn).toDateString()}/>
+                                        
+                                        {/* Actions Column */}
+                                        <TableActionsColumn updateAction={`/app/accounts/${account.id}/edit`} deleteAction={'account'} formId={'form-delete-account'} deleteId={account.id}/>
+                                    </tr>)})}
+                    </Table>
+                </Suspense>
             } 
         </AppSection>
     )

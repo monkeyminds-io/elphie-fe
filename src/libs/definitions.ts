@@ -117,8 +117,18 @@ export type Account = {
     type: string,
     iban: string,
     balance: string,
-    currency: string,
     plaidId: string,
+    createdOn: string,
+    updatedOn: string,
+}
+
+export type Transaction = {
+    id: string,
+    userId: string,
+    accountId: string,
+    reference: string,
+    amount: string,
+    date: string,
     createdOn: string,
     updatedOn: string,
 }
@@ -134,8 +144,24 @@ export type AccountResponse = {
         type: string,
         iban: string,
         balance: string,
-        currency: string,
         plaidId: string | null,
+        createdOn: string,
+        updatedOn: string | null,
+    },
+    ok: boolean,
+    message: string,
+    timestamp: string,
+    status: number,
+}
+
+export type TransactionResponse = {
+    data: {
+        id: string,
+        userId: string,
+        accountId: string,
+        reference: string,
+        amount: string,
+        date: string,
         createdOn: string,
         updatedOn: string | null,
     },

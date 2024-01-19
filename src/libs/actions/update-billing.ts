@@ -11,7 +11,7 @@ import { redirect } from 'next/navigation';
 import { z } from 'zod';
 import { updateBilling as update } from '../endpoints';
 import bcrypt from 'bcrypt';
-import { getCookie } from '../cookies';
+import { cookies } from 'next/headers';
 
 // =============================================================================
 // Actions Form Schemas
@@ -103,7 +103,7 @@ export const updateBilling = async (id: string, prevState: State | undefined, fo
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                userId: getCookie('user-id')?.value,
+                userId: cookies().get('user-id')?.value,
                 addressLine1: validatedFields.data.addressLine1,
                 addressLine2: validatedFields.data.addressLine2,
                 county: validatedFields.data.county,

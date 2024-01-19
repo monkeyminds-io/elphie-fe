@@ -6,15 +6,11 @@
 // =============================================================================
 // Page Imports
 // =============================================================================
+import { Metadata } from 'next'
 import { Account } from '@/libs/definitions'
 import { getAccountById } from '@/libs/endpoints'
 import { AppSection } from '@/ui/base/layouts'
 import { FormAccounts } from '@/ui/components/form-accounts'
-import { Metadata } from 'next'
-
-// =============================================================================
-// Page Props
-// =============================================================================
 
 // =============================================================================
 // Page Metadata
@@ -27,19 +23,19 @@ export const metadata: Metadata = {
 // Page Component
 // =============================================================================
 export default async function EditAccountPage({ params }: { params: { id: string }}) {
+    
+    // Setting variables
+    const accountId = params.id;
 
     // Setting the breadcrumbs array
     const breadcrumbs = [
         { label: "App", href: "#", active: false },
         { label: "Accounts", href: "/app/accounts", active: false },
-        { label: "Create", href: "/app/accounts/create", active: true },
+        { label: "Edit", href: `/app/accounts/${accountId}/edit`, active: true },
     ]
 
-    // Setting variables
-    const accountId = params.id;
-
     // Fetch account
-    const response = await fetch(getAccountById(accountId), { cache: 'no-cache'});
+    const response = await fetch(getAccountById(accountId));
     const json = await response.json();
     const account: Account = json.data;
 

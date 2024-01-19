@@ -8,7 +8,7 @@
 // Actions Imports
 // =============================================================================
 import { redirect } from 'next/navigation';
-import { removeCookie } from '../cookies';
+import { cookies } from 'next/headers';
 
 // =============================================================================
 // Actions Form Schemas
@@ -24,8 +24,8 @@ import { removeCookie } from '../cookies';
 export const userLogout = async (formData: FormData) => {
 
     // Remove all Cookies
-    removeCookie('session-id');
-    removeCookie('user-id');
+    cookies().set('session-id', '');
+    cookies().set('user-id', '');
 
     // Redirect to Home page
     redirect(`${process.env.WEBSITE_DOMAIN}/`);

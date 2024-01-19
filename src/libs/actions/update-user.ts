@@ -10,9 +10,9 @@
 // =============================================================================
 import { redirect } from 'next/navigation';
 import { z } from 'zod';
-import { getCookie } from '../cookies';
 import bcrypt from 'bcrypt';
 import { getUserById, updateUser as update } from '../endpoints';
+import { cookies } from 'next/headers';
 
 
 // =============================================================================
@@ -49,7 +49,7 @@ const FormSchema = z.object({
 const GeneralInfo = FormSchema
 .refine(
     async (data) => {
-        const response = await fetch(getUserById(getCookie('user-id')?.value as string));
+        const response = await fetch(getUserById(cookies().get('user-id')?.value as string));
         const json = await response.json();
         const user = json.data;
         if(data.currentPassword === undefined) return true
