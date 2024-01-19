@@ -11,6 +11,7 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { z } from 'zod';
 import { createAccount, deleteAccount } from '../endpoints';
+import { getCookie } from '../cookies';
 
 // =============================================================================
 // Actions Form Schemas
@@ -50,7 +51,7 @@ export type State = {
 // =============================================================================
 // Actions Functions
 // =============================================================================
-export const accountsCreate = async (userId: string | undefined, prevState: State | undefined, formData: FormData) => {
+export const accountsCreate = async (prevState: State | undefined, formData: FormData) => {
 
     // Validate fields
     const validatedFields = FormSchema.safeParse(
@@ -75,7 +76,7 @@ export const accountsCreate = async (userId: string | undefined, prevState: Stat
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                userId: userId,
+                userId: getCookie('user-id')?.value,
                 name: validatedFields.data.name,
                 type: validatedFields.data.type,
                 iban: validatedFields.data.iban,
@@ -96,7 +97,7 @@ export const accountsCreate = async (userId: string | undefined, prevState: Stat
     redirect('/app/accounts');
 }
 
-export const accountsUpdate = async (id: string | undefined, userId: string | undefined, prevState: State | undefined, formData: FormData) => {
+export const accountsUpdate = async (id: string | undefined, prevState: State | undefined, formData: FormData) => {
 
     // Validate fields
     const validatedFields = FormSchema.safeParse(

@@ -101,7 +101,7 @@ export default async function AccountsPage({searchParams}: PageProps) {
                                     <TableColumn data={account.updatedOn === null ? new Date(account.createdOn).toDateString() : new Date(account.updatedOn).toDateString()}/>
                                     
                                     {/* Actions Column */}
-                                    <TableActionsColumn updateAction={`/app/accounts/${user.id}-${account.id}/edit`} deleteAction={accountsDelete.bind(null, account.id, account.name)} formId={'form-delete-account'}/>
+                                    <TableActionsColumn updateAction={`/app/accounts/${account.id}/edit`} deleteAction={accountsDelete.bind(null, account.id, account.name)} formId={'form-delete-account'}/>
                                 </tr>)})}
                 </Table>
             } 

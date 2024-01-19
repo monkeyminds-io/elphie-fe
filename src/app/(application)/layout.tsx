@@ -13,9 +13,6 @@ import { Sidebar } from '@/ui/sidebar';
 import { inter } from '@/libs/fonts';
 import '@/styles/globals.css'
 import { SidebarToggle } from '@/ui/sidebar-toggle';
-import { User } from '@/libs/definitions';
-import { getCookie } from '@/libs/cookies';
-import { getUserById } from '@/libs/endpoints';
 
 // =============================================================================
 // Layout Props

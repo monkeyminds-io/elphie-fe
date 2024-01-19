@@ -19,11 +19,7 @@ const cookieStore = cookies();
 // Cookies Functions
 // =============================================================================
 export const setCookie = (key: string, value: string) => {
-    cookieStore.set(key, value, {
-        httpOnly: true,
-        path: '/',
-        maxAge: 86700
-    });
+    cookieStore.set(key, value);
 }
 
 export const getCookie = (key: string) => {
@@ -35,9 +31,5 @@ export const getAll = () => {
 }
 
 export const removeCookie = (key: string) => {
-    cookieStore.set(key, '', {
-        httpOnly: true,
-        path: '/',
-        maxAge: -1
-    });
+    cookieStore.set(key, '');
 }

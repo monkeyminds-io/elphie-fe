@@ -18,7 +18,6 @@ import { AppInput } from '../elements/inputs';
 type FromProps = {
     id: string,
     action: string,
-    userId: string | undefined,
     accountId?: string | null,
     defaultValues?: {
         name: string,
@@ -32,16 +31,13 @@ type FromProps = {
 // =============================================================================
 // React Components
 // =============================================================================
-export const FormAccounts = ({id, action, userId, accountId = null, defaultValues = null, buttonText}: FromProps) => {
+export const FormAccounts = ({id, action, accountId = null, defaultValues = null, buttonText}: FromProps) => {
 
     // Data Validation object that will receive any errors on Submit in form of messages.
     const initialState = { errors: {}, message: null! };
 
-    // Binding User Id in the accountsCreate action
-    const accountsCreateWithUserId = accountsCreate.bind(null, userId);
-
     // Binding the Account Id in the accountsUpdate action
-    const accountsUpdateWithId = accountsUpdate.bind(null, accountId !== null ? accountId : undefined, userId)
+    const accountsUpdateWithId = accountsUpdate.bind(null, accountId !== null ? accountId : undefined)
 
     /**
      * Using the React function useFormState we can pass the function that is responsible for the actual action of the form
@@ -50,7 +46,7 @@ export const FormAccounts = ({id, action, userId, accountId = null, defaultValue
      *    1 -> The state variable that will contain the potential errors
      *    2 -> The dispatch method / function that points at the actual action function
      */
-    const [state, dispatch] = useFormState(action === 'create' ? accountsCreateWithUserId : accountsUpdateWithId, initialState);
+    const [state, dispatch] = useFormState(action === 'create' ? accountsCreate : accountsUpdateWithId, initialState);
 
     return (
         <form id={id} action={dispatch} className='px-6 py-4'>

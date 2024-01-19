@@ -6,10 +6,11 @@
 // =============================================================================
 // Page Imports
 // =============================================================================
-import { Account } from '@/libs/definitions'
-import { getAccountById } from '@/libs/endpoints'
-import { AppSection } from '@/ui/base/layouts'
-import { FormAccounts } from '@/ui/components/form-accounts'
+import { getCookie } from '../../../../../../../libs/cookies'
+import { Account } from '../../../../../../../libs/definitions'
+import { getAccountById } from '../../../../../../../libs/endpoints'
+import { AppSection } from '../../../../../../../ui/base/layouts'
+import { FormAccounts } from '../../../../../../../ui/components/form-accounts'
 import { Metadata } from 'next'
 
 // =============================================================================
@@ -36,16 +37,17 @@ export default async function EditAccountPage({ params }: { params: { id: string
     ]
 
     // Setting variables
+    const userId = getCookie('user-id')?.value;
     const accountId = params.id;
 
     // Fetch account
-    const response = await fetch(getAccountById(accountId), { cache: 'no-cache'});
+    const response = await fetch(getAccountById(accountId), {cache: 'no-cache'});
     const json = await response.json();
     const account: Account = json.data;
 
     return (
         <AppSection breadcrumbs={breadcrumbs} heading={'Create Bank Account'} subheading={'Here you can create a new Bank Account.'} isTableSection={false} createAction={'#'}>
-            <FormAccounts id={'form-accounts-update'} action={'update'} buttonText={'Update Account'} accountId={accountId} defaultValues={account}/>
+            <FormAccounts id={'form-accounts-update'} action={'update'} buttonText={'Update Account'} userId={userId} accountId={accountId} defaultValues={account}/>
         </AppSection>
     )
 }

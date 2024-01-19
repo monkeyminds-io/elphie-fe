@@ -36,7 +36,7 @@ export default function CreateAccountPage() {
 
     return (
         <AppSection breadcrumbs={breadcrumbs} heading={'Create Bank Account'} subheading={'Here you can create a new Bank Account.'} isTableSection={false} createAction={'#'}>
-            <FormAccounts id={'form-accounts-create'} action={'create'} buttonText={'Create Account'} userId={getCookie('user-id')?.value.toString()!}/>
+            <FormAccounts id={'form-accounts-create'} action={'create'} buttonText={'Create Account'}/>
         </AppSection>
     )
 }
