@@ -21,6 +21,7 @@ const FormSchema = z.object({
     reference: z.string(),
     amount: z.string(),
     date: z.string(),
+    type: z.string(),
 });
 
 // =============================================================================
@@ -32,6 +33,7 @@ export type State = {
         reference?: string[],
         amount?: string[],
         date?: string[],
+        type?: string[],
     };
     message?: string | null;
 };
@@ -68,7 +70,8 @@ export const transactionsCreate = async (prevState: State | undefined, formData:
                 accountId: validatedFields.data.accountId,
                 reference: validatedFields.data.reference,
                 amount: validatedFields.data.amount.replace(',', ''),
-                date: validatedFields.data.date
+                date: validatedFields.data.date,
+                type: validatedFields.data.type,
             })
         })
         const json = await response.json();
@@ -114,7 +117,8 @@ export const transactionsUpdate = async (id: string, prevState: State | undefine
                 accountId: validatedFields.data.accountId,
                 reference: validatedFields.data.reference,
                 amount: validatedFields.data.amount.replace(',', ''),
-                date: validatedFields.data.date
+                date: validatedFields.data.date,
+                type: validatedFields.data.type,
             })
         })
         const json = await response.json();

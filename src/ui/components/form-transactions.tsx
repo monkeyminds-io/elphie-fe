@@ -26,6 +26,7 @@ type FromProps = {
         accountId: string,
         reference: string,
         amount: string,
+        type: string,
         date: string,
     } | null,
     buttonText: string,
@@ -98,6 +99,44 @@ export const FormTransactions = ({id, action, transactionId = null, defaultValue
                 <div className="sm:col-span-9">
                     <div className="space-y-2 sm:flex sm:space-y-0">
                     <AppInputGroup name={"amount"} placeholder={"Transaction amount"} errors={state?.errors?.date} defaultValue={defaultValues ? euroFormatter.format(parseFloat(defaultValues.amount)) : ''}/>
+                    </div>
+                </div>
+                {/* End Col */}
+
+                <div className="sm:col-span-3">
+                    <label htmlFor="type" className="inline-block text-sm text-gray-800 mt-2.5">
+                        Transaction type
+                    </label>
+                </div>
+                {/* End Col */}
+
+                <div className="sm:col-span-9">
+                    <div className="space-y-2">
+                        <label htmlFor="debit-type"  className="flex rounded-lg shadow-sm cursor-pointer">
+                            <span className="px-4 inline-flex items-center min-w-fit rounded-s-md border border-e-0 border-gray-200 bg-gray-50 text-sm text-gray-500">
+                                <input type="radio" id="debit-type" name="type" value='debit' defaultChecked={defaultValues?.type === 'debit' ? true : false}
+                                className="shrink-0 border-gray-200 rounded-full text-indigo-600 focus:ring-indigo-500"/>
+                            </span>
+                            <div className="flex flex-row justify-between py-3 px-4 pe-11 w-full border border-gray-200 shadow-sm rounded-e-lg text-sm">
+                                Debit
+                            </div>
+                        </label>
+                        <label htmlFor="creadit-type"  className="flex rounded-lg shadow-sm  cursor-pointer">
+                            <span className="px-4 inline-flex items-center min-w-fit rounded-s-md border border-e-0 border-gray-200 bg-gray-50 text-sm text-gray-500">
+                                <input type="radio"  id="creadit-type" name="type" value='credit' defaultChecked={defaultValues?.type === 'creadit' ? true : false}
+                                className="shrink-0 border-gray-200 rounded-full text-indigo-600 focus:ring-indigo-500"/>
+                            </span>
+                            <div className="flex flex-row justify-between py-3 px-4 pe-11 w-full border border-gray-200 shadow-sm rounded-e-lg text-sm">
+                                Creadit
+                            </div>
+                        </label>
+
+                        {/* Errors Block */}
+                        <div id={`type-error`} aria-live="polite" aria-atomic="true">
+                            {state?.errors?.type && 
+                            state?.errors?.type.map((error: string) => <p className="mt-2 text-sm text-red-500" key={error}>{error}</p>)}
+                        </div>
+                        {/* End Errors Block */}
                     </div>
                 </div>
                 {/* End Col */}

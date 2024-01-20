@@ -177,7 +177,6 @@ export const FormGeneralInfo = ({user}: {user: User}) => {
                 </div>
                 {/* End Col */}
 
-                {/* TODO Create Label Component for App Form Main */}
                 <div className="sm:col-span-3">
                     <label htmlFor="accountType" className="inline-block text-sm text-gray-800 mt-2.5">
                         Upgrade account

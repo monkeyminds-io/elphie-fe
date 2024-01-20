@@ -86,11 +86,16 @@ export const FormBillingInfoUpdate = ({ billing }: { billing: BillingInfo}) => {
 
                             <AppSelect 
                             name={'county'} 
-                            options={[
-                                'County', 'Antrim', 'Armagh', 'Carlow', 'Cavan', 'Clare', 'Cork', 'Derry', 'Donegal', 'Down', 'Dublin', 'Fermanagh', 
+                            optionsValue={[
+                                'Antrim', 'Armagh', 'Carlow', 'Cavan', 'Clare', 'Cork', 'Derry', 'Donegal', 'Down', 'Dublin', 'Fermanagh', 
                                 'Galway', 'Kerry', 'Kildare', 'Kilkenny','Laois', 'Leitrim', 'Limerick', 'Longford', 'Louth', 'Mayo', 'Meath', 
                                 'Monaghan', 'Offaly', 'Roscommon', 'Sligo', 'Tipperary', 'Tyrone', 'Waterford', 'Westmeath', 'Wexford', 'Wicklow',
                             ]} 
+                            optionsText={[
+                                'Antrim', 'Armagh', 'Carlow', 'Cavan', 'Clare', 'Cork', 'Derry', 'Donegal', 'Down', 'Dublin', 'Fermanagh', 
+                                'Galway', 'Kerry', 'Kildare', 'Kilkenny','Laois', 'Leitrim', 'Limerick', 'Longford', 'Louth', 'Mayo', 'Meath', 
+                                'Monaghan', 'Offaly', 'Roscommon', 'Sligo', 'Tipperary', 'Tyrone', 'Waterford', 'Westmeath', 'Wexford', 'Wicklow',
+                            ]}
                             errors={state?.errors?.county} 
                             defaultValue={billing !== null ? billing.county : ''}/>
 
@@ -240,11 +245,16 @@ export const FormBillingInfoCreate = ({ userId }: { userId: string}) => {
 
                             <AppSelect 
                             name={'county'} 
-                            options={[
+                            optionsValue={[
                                 'Antrim', 'Armagh', 'Carlow', 'Cavan', 'Clare', 'Cork', 'Derry', 'Donegal', 'Down', 'Dublin', 'Fermanagh', 
                                 'Galway', 'Kerry', 'Kildare', 'Kilkenny','Laois', 'Leitrim', 'Limerick', 'Longford', 'Louth', 'Mayo', 'Meath', 
                                 'Monaghan', 'Offaly', 'Roscommon', 'Sligo', 'Tipperary', 'Tyrone', 'Waterford', 'Westmeath', 'Wexford', 'Wicklow',
                             ]} 
+                            optionsText={[
+                                'Antrim', 'Armagh', 'Carlow', 'Cavan', 'Clare', 'Cork', 'Derry', 'Donegal', 'Down', 'Dublin', 'Fermanagh', 
+                                'Galway', 'Kerry', 'Kildare', 'Kilkenny','Laois', 'Leitrim', 'Limerick', 'Longford', 'Louth', 'Mayo', 'Meath', 
+                                'Monaghan', 'Offaly', 'Roscommon', 'Sligo', 'Tipperary', 'Tyrone', 'Waterford', 'Westmeath', 'Wexford', 'Wicklow',
+                            ]}
                             errors={state?.errors?.county}/>
 
                             <AppInput 

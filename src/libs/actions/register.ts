@@ -122,6 +122,8 @@ export const registerUser = async (prevState: State | undefined, formData: FormD
         // Set Response to JSON format
         const userJson = await userResponse.json() as UserResponse;
 
+        console.log(userJson);
+
         // If response is not OK then send error feedback to user.
         if(!userJson.ok) return { message: userJson.message }
 
@@ -161,6 +163,9 @@ export const registerUser = async (prevState: State | undefined, formData: FormD
 
             // Set response to Json format
             const billingJson = await billingResponse.json() as BillingResponse;
+
+            console.log(billingJson);
+            
 
             // If reponse is not ok return error
             if(!billingJson.ok) return { message: billingJson.message }

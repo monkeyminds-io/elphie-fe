@@ -48,7 +48,7 @@ export default async function SavingsPage({searchParams}: SavingsPageProps) {
     ];
 
     // Headers array
-    const headers = ['Name', 'Current amount', 'Target amount', 'Remaining amount', 'Target date']
+    const headers = ['Name', 'Saved', 'Target', 'Remaining', 'Target date']
 
     // Variables for Paggination
     const ROWS_PER_PAGE = 8;

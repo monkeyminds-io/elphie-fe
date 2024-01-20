@@ -128,6 +128,7 @@ export type Transaction = {
     accountId: string,
     reference: string,
     amount: string,
+    type: string,
     date: string,
     createdOn: string,
     updatedOn: string,

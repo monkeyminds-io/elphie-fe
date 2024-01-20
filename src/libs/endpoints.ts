@@ -39,6 +39,7 @@ export const deleteAccount = (id: string) => `${MAIN_API}/accounts/${id}/delete`
 export const createTransaction = () => `${MAIN_API}/transactions/create`;
 export const getTransactionById = (id: string) => `${MAIN_API}/transactions/get?id=${id}`;
 export const getFilteredTransactionsByUserId = (userId: string, query: string) => `${MAIN_API}/transactions/get?userId=${userId}&query=${query}`;
+export const getTransactionsBetweenDatesByUserId = (userId: string, start: string, end: string) => `${MAIN_API}/transactions/get?userId=${userId}&start=${start}&end=${end}`;
 export const updateTransaction = (id: string) => `${MAIN_API}/transactions/${id}/update`;
 export const deleteTransaction = (id: string) => `${MAIN_API}/transactions/${id}/delete`;
 

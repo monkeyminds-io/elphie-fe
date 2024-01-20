@@ -47,7 +47,7 @@ export default async function TransactionsPage({searchParams}: PageProps) {
     ]
 
     // TODO Headers array
-    const headers = ['Account', 'Reference', 'amount', 'date']
+    const headers = ['Account', 'Reference', 'Incomes', 'Expensses', 'date']
 
     // Variables for Paggination
     const ROWS_PER_PAGE = 8;
@@ -71,10 +71,10 @@ export default async function TransactionsPage({searchParams}: PageProps) {
     // Fetch Transactions
     const transactionsResponse = await fetch(getFilteredTransactionsByUserId(user.id, query), { cache: "no-cache" });
     const transactionsJson = await transactionsResponse.json();
-    const rawTransactions: Transaction[] | undefined = transactionsJson.data;
+    const rawTransactions: Transaction[] = transactionsJson.data;
 
     // Prepare data for pagination display
-    const transactions: Transaction[] = rawTransactions === undefined ? [] : rawTransactions.slice(offset, limit);
+    const transactions: Transaction[] = transactionsJson.ok ? rawTransactions.slice(offset, limit) : [];
     const totalPages = Math.ceil(rawTransactions === undefined ? 0 : rawTransactions.length / ROWS_PER_PAGE);
 
     return (
@@ -92,7 +92,7 @@ export default async function TransactionsPage({searchParams}: PageProps) {
                     <Table headers={headers}>
                         {transactions.map(async (transaction, index) => {
                             const amount = parseFloat(transaction.amount);
-                            const account = accounts!.find(account => account.id === transaction.accountId);
+                            const account = accounts.find(account => account.id === transaction.accountId);
                             return  (<tr key={index}>
 
                                         {/* Name Column */}
@@ -101,8 +101,11 @@ export default async function TransactionsPage({searchParams}: PageProps) {
                                         {/* Name Column */}
                                         <TableColumn data={transaction.reference}/>
 
-                                        {/* Balance Column */}
-                                        <TableColumn styles={amount < 0 ? 'text-red-500' : 'text-green-500'} data={`€ ${euroFormatter.format(amount).toString()}`}/>
+                                        {/* Creadits Column */}
+                                        <TableColumn styles={'text-green-500'} data={transaction.type === 'credit' ?  `€ ${euroFormatter.format(amount).toString()}` : ''}/>
+
+                                        {/* Debits Column */}
+                                        <TableColumn styles={'text-red-500'} data={transaction.type === 'debit' ? `€ ${euroFormatter.format(amount).toString()}` : ''}/>
 
                                         {/* Last Update Column */}
                                         <TableColumn data={new Date(transaction.date).toDateString()}/>

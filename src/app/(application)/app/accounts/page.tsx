@@ -66,11 +66,11 @@ export default async function AccountsPage({searchParams}: PageProps) {
     // Fetch Accounts
     const accountsResponse = await fetch(getFilteredAccountsByUserId(user.id, query), { cache: "no-cache" });
     const accountsJson = await accountsResponse.json();
-    const rawAccounts: Account[] | undefined = accountsJson.data;
+    const rawAccounts: Account[] = accountsJson.data;
 
     // Prepare data for pagination display
-    const accounts: Account[] = rawAccounts === undefined ? [] : rawAccounts.slice(offset, limit);
-    const totalPages = Math.ceil(rawAccounts === undefined ? 0 : rawAccounts.length / ROWS_PER_PAGE);
+    const accounts: Account[] = accountsJson.ok ? rawAccounts.slice(offset, limit) : [];
+    const totalPages = Math.ceil(rawAccounts.length / ROWS_PER_PAGE);
 
     return (
         <AppSection 
@@ -84,11 +84,9 @@ export default async function AccountsPage({searchParams}: PageProps) {
             {accounts.length === 0 ?
                 <EmptyTable item={"Account"} createAction={'/app/accounts/create'} userType={user.accountType}/>
                 : <Suspense fallback={<Loading/>}>
-
                     <Table headers={headers}>
                         {accounts.map((account, index) => {
                             return  (<tr key={index}>
-                                        
                                         {/* Name Column */}
                                         <TableColumn data={account.name}/>
 
